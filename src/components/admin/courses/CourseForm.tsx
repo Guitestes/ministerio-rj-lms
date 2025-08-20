@@ -1,0 +1,165 @@
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CourseDocuments } from "./CourseDocuments";
+
+interface CourseFormProps {
+  formData: {
+    title: string;
+    description: string;
+    instructor: string;
+    duration: string;
+    thumbnail: string;
+    syllabus: string;
+    bibliography: string;
+  };
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  isSubmitting: boolean;
+  editingCourseId: string | null;
+}
+
+const CourseForm = ({
+  formData,
+  handleInputChange,
+  handleSubmit,
+  isSubmitting,
+  editingCourseId,
+}: CourseFormProps) => {
+  return (
+    <DialogContent className="w-[95vw] sm:max-w-[800px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <DialogHeader className="mb-4">
+          <DialogTitle className="text-xl sm:text-2xl">
+            {editingCourseId ? "Editar Curso" : "Criar Novo Curso"}
+          </DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
+            {editingCourseId
+              ? "Atualize as informações do curso abaixo."
+              : "Preencha as informações do novo curso abaixo."}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="title" className="required">Título</Label>
+              <Input
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="duration">Duração (horas)</Label>
+              <Input
+                id="duration"
+                name="duration"
+                type="number"
+                min="1"
+                value={formData.duration}
+                onChange={handleInputChange}
+                placeholder="Ex: 40"
+                onKeyPress={(e) => {
+                  // Permitir apenas números
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="instructor" className="required">Instrutor</Label>
+            <Input
+              id="instructor"
+              name="instructor"
+              value={formData.instructor}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="thumbnail">URL da Imagem</Label>
+            <Input
+              id="thumbnail"
+              name="thumbnail"
+              value={formData.thumbnail}
+              onChange={handleInputChange}
+              placeholder="/placeholder.svg"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Descrição</Label>
+            <Textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="syllabus">Ementa</Label>
+            <Textarea
+              id="syllabus"
+              name="syllabus"
+              value={formData.syllabus}
+              onChange={handleInputChange}
+              rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="bibliography">Bibliografia</Label>
+            <Textarea
+              id="bibliography"
+              name="bibliography"
+              value={formData.bibliography}
+              onChange={handleInputChange}
+              rows={3}
+            />
+          </div>
+
+          {editingCourseId && <CourseDocuments courseId={editingCourseId} />}
+        </div>
+
+        <DialogFooter className="mt-6 flex flex-col sm:flex-row sm:justify-end gap-2">
+          <Button 
+            type="button" 
+            variant="outline"
+            className="w-full sm:w-auto"
+            onClick={() => (document.querySelector('[data-dialog-close]') as HTMLButtonElement)?.click()}
+          >
+            Cancelar
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full sm:w-auto"
+          >
+            {isSubmitting ? "Salvando..." : editingCourseId ? "Atualizar" : "Criar"}
+          </Button>
+        </DialogFooter>
+      </form>
+    </DialogContent>
+  );
+};
+
+export default CourseForm;

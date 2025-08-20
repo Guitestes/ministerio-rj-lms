@@ -1,0 +1,41 @@
+MÓDULO/SEÇÃO DE GESTÃO DE MARKETING
+Este módulo aborda funcionalidades relacionadas a CRM, newsletters e envio de e-mails. O
+ANEXO A detalha os requisitos para esta seção.
+Requisitos:
+• 3.4.1. Customer relationship management – CRM;
+• 3.4.2. Newsletters - produção de conteúdo;
+• 3.4.3. Controle de mídias para captação de alunos e consulta de resultados;
+• 3.4.4. Envio de mailing.
+Análise do Projeto oneeduca :
+• Customer Relationship Management (CRM):
+• Aderência: Baixa.
+• Evidências:
+• Não há indícios diretos de um módulo CRM na estrutura de arquivos. Um CRM
+geralmente envolve a gestão de leads, histórico de interações, segmentação de
+clientes, automação de vendas e marketing, etc. Embora o userService.ts e
+profileService.ts possam gerenciar dados de usuários, eles não configuram um
+CRM completo. A implementação de um CRM exigiria a criação de novas entidades
+de dados e funcionalidades complexas para gerenciar o relacionamento com
+alunos e potenciais alunos.
+• Newsletters - Produção de Conteúdo e Envio de Mailing:
+• Aderência: Baixa.
+• Evidências:
+• Não há evidências de funcionalidades para produção de conteúdo de newsletters
+ou envio de mailing em massa. Isso geralmente requer integração com serviços de
+e-mail marketing (como Mailchimp, SendGrid) ou módulos dedicados para
+gerenciamento de campanhas e listas de e-mail. O notificationService.ts pode ser
+usado para notificações pontuais, mas não para campanhas de marketing em
+massa.
+• Controle de Mídias para Captação de Alunos e Consulta de Resultados:
+• Aderência: Baixa.
+• Evidências:
+• Não há qualquer indício de funcionalidades para gerenciar campanhas de
+marketing, rastrear a origem de alunos (atribuição de leads), ou analisar o
+desempenho de mídias (ROI de campanhas, métricas de aquisição). Esta é uma
+funcionalidade que exigiria integração com plataformas de publicidade e análise
+de dados de marketing.
+Conclusão para Gestão de Marketing: O projeto oneeduca parece não possuir
+funcionalidades de gestão de marketing. Esta é uma área que exigiria desenvolvimento
+completo para atender aos requisitos da licitação, desde a base de um CRM até a
+automação de marketing e análise de campanhas. Todas as funcionalidades de marketing
+listadas no ANEXO A são lacunas significativas.

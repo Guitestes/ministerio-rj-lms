@@ -1,0 +1,376 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 217.2 32.6% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217.2 32.6% 12%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 20%;
+    --muted-foreground: 215 20.2% 75%;
+
+    --accent: 217.2 32.6% 20%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.9 80.4% 10%;
+
+    --border: 217.2 32.6% 25%;
+    --input: 217.2 32.6% 20%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .course-card {
+    @apply bg-card text-card-foreground rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-300;
+  }
+  
+  .progress-bar {
+    @apply h-2 bg-muted rounded-full overflow-hidden;
+  }
+  
+  .progress-value {
+    @apply h-full bg-primary rounded-full;
+  }
+}
+
+/* FullCalendar Event Styles */
+.fc-event-scheduled {
+  background-color: #3b82f6 !important;
+  border-color: #2563eb !important;
+}
+
+.fc-event-completed {
+  background-color: #16a34a !important;
+  border-color: #15803d !important;
+}
+
+.fc-event-canceled {
+  background-color: #ef4444 !important;
+  border-color: #dc2626 !important;
+}
+
+/* FullCalendar Dark Mode Styles */
+.dark .fc {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-theme-standard .fc-scrollgrid {
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .fc-theme-standard td,
+.dark .fc-theme-standard th {
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .fc-theme-standard .fc-scrollgrid-section > * {
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .fc-col-header-cell {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark .fc-daygrid-day {
+  background-color: hsl(var(--background)) !important;
+}
+
+.dark .fc-daygrid-day:hover {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.dark .fc-day-today {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.dark .fc-button {
+  background-color: hsl(var(--primary)) !important;
+  border-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.dark .fc-button:hover {
+  background-color: hsl(var(--primary)) !important;
+  opacity: 0.9;
+}
+
+.dark .fc-button:disabled {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark .fc-toolbar-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-daygrid-day-number {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-timegrid-slot {
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .fc-timegrid-axis {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark .fc-timegrid-slot-label {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark .fc-event {
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .fc-event-title {
+  color: white !important;
+}
+
+.dark .fc-more-link {
+  color: hsl(var(--primary)) !important;
+}
+
+.dark .fc-popover {
+  background-color: hsl(var(--popover)) !important;
+  border-color: hsl(var(--border)) !important;
+  color: hsl(var(--popover-foreground)) !important;
+}
+
+.dark .fc-popover-header {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Calendar container dark mode */
+.calendar-container {
+  @apply bg-card text-card-foreground rounded-lg border shadow-sm;
+}
+
+.dark .calendar-container {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* React Day Picker (Calendar UI component) Dark Mode */
+.dark .rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: hsl(var(--primary));
+  --rdp-background-color: hsl(var(--background));
+  --rdp-accent-color-dark: hsl(var(--primary));
+  --rdp-background-color-dark: hsl(var(--background));
+  --rdp-outline: 2px solid hsl(var(--primary));
+  --rdp-outline-selected: 2px solid hsl(var(--primary));
+  color: hsl(var(--foreground));
+}
+
+.dark .rdp-day {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .rdp-day:hover {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+.dark .rdp-day_selected {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.dark .rdp-day_today {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+  font-weight: bold;
+}
+
+.dark .rdp-day_outside {
+  color: hsl(var(--muted-foreground)) !important;
+  opacity: 0.5;
+}
+
+.dark .rdp-day_disabled {
+  color: hsl(var(--muted-foreground)) !important;
+  opacity: 0.3;
+}
+
+.dark .rdp-head_cell {
+  color: hsl(var(--muted-foreground)) !important;
+  font-weight: 600;
+}
+
+.dark .rdp-caption_label {
+  color: hsl(var(--foreground)) !important;
+  font-weight: 600;
+}
+
+.dark .rdp-nav_button {
+  color: hsl(var(--foreground)) !important;
+  border: 1px solid hsl(var(--border));
+  background-color: transparent;
+}
+
+.dark .rdp-nav_button:hover {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+.dark .rdp-table {
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+/* Course card dark mode improvements */
+.dark .course-card {
+  @apply bg-card text-card-foreground border-border;
+}
+
+/* Table improvements for dark mode */
+.dark table {
+  border-color: hsl(var(--border));
+}
+
+.dark th {
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  border-color: hsl(var(--border));
+}
+
+.dark td {
+  border-color: hsl(var(--border));
+}
+
+.dark tr:hover {
+  background-color: hsl(var(--accent));
+}
+
+/* Improved contrast for muted text */
+.dark .text-muted-foreground {
+  color: hsl(215 20.2% 75%) !important;
+}
+
+/* Better visibility for borders */
+.dark .border {
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Enhanced button contrast */
+.dark .btn-outline {
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.dark .btn-outline:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+/* Improved input field visibility */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: hsl(var(--input));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+/* Better dropdown visibility */
+.dark .dropdown-content {
+  background-color: hsl(var(--popover));
+  border-color: hsl(var(--border));
+  color: hsl(var(--popover-foreground));
+}
+
+/* Enhanced modal/dialog contrast */
+.dark .dialog-content {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+  color: hsl(var(--card-foreground));
+}
+
+/* Improved sidebar contrast */
+.dark .sidebar {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+/* Better navigation contrast */
+.dark .nav-item:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}

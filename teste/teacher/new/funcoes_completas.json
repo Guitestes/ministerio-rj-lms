@@ -1,0 +1,50 @@
+[
+  {
+    "function_name": "get_document_by_auth_code",
+    "schema_name": "public",
+    "arguments": "auth_code text",
+    "return_type": "SETOF documents"
+  },
+  {
+    "function_name": "get_teams_for_user",
+    "schema_name": "public",
+    "arguments": "user_id uuid",
+    "return_type": "TABLE(team_id uuid)"
+  },
+  {
+    "function_name": "get_user_final_grades",
+    "schema_name": "public",
+    "arguments": "user_id_param uuid, course_id_param uuid",
+    "return_type": "TABLE(user_id uuid, user_name text, course_title text, quiz_title text, score numeric)"
+  },
+  {
+    "function_name": "get_user_transcript_data",
+    "schema_name": "public",
+    "arguments": "user_id_param uuid",
+    "return_type": "TABLE(course_id uuid, course_title text, enrollment_status text, final_grade numeric, completion_date timestamp with time zone)"
+  },
+  {
+    "function_name": "handle_professor_details_update",
+    "schema_name": "public",
+    "arguments": "",
+    "return_type": "trigger"
+  },
+  {
+    "function_name": "is_admin",
+    "schema_name": "public",
+    "arguments": "user_id uuid",
+    "return_type": "boolean"
+  },
+  {
+    "function_name": "is_admin",
+    "schema_name": "public",
+    "arguments": "",
+    "return_type": "boolean"
+  },
+  {
+    "function_name": "trigger_set_timestamp",
+    "schema_name": "public",
+    "arguments": "",
+    "return_type": "trigger"
+  }
+]

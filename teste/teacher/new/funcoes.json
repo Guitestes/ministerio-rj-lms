@@ -1,0 +1,42 @@
+[
+  {
+    "routine_name": "get_document_by_auth_code",
+    "routine_schema": "public",
+    "return_type": "USER-DEFINED"
+  },
+  {
+    "routine_name": "get_teams_for_user",
+    "routine_schema": "public",
+    "return_type": "uuid"
+  },
+  {
+    "routine_name": "get_user_final_grades",
+    "routine_schema": "public",
+    "return_type": "record"
+  },
+  {
+    "routine_name": "get_user_transcript_data",
+    "routine_schema": "public",
+    "return_type": "record"
+  },
+  {
+    "routine_name": "handle_professor_details_update",
+    "routine_schema": "public",
+    "return_type": "trigger"
+  },
+  {
+    "routine_name": "is_admin",
+    "routine_schema": "public",
+    "return_type": "boolean"
+  },
+  {
+    "routine_name": "is_admin",
+    "routine_schema": "public",
+    "return_type": "boolean"
+  },
+  {
+    "routine_name": "trigger_set_timestamp",
+    "routine_schema": "public",
+    "return_type": "trigger"
+  }
+]

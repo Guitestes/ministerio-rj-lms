@@ -1,0 +1,522 @@
+[
+  {
+    "policy_name": "Alunos podem inserir seus próprios trabalhos",
+    "schema_name": "public",
+    "table_name": "academic_works",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": null,
+    "with_check_expression": "(auth.uid() = user_id)"
+  },
+  {
+    "policy_name": "Alunos podem ver seus próprios trabalhos",
+    "schema_name": "public",
+    "table_name": "academic_works",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Instrutores podem ver trabalhos de suas turmas",
+    "schema_name": "public",
+    "table_name": "academic_works",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM classes c\n  WHERE ((c.id = academic_works.class_id) AND (c.instructor_id = auth.uid()))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can view all classes",
+    "schema_name": "public",
+    "table_name": "classes",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable insert for authenticated users only",
+    "schema_name": "public",
+    "table_name": "classes",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "using_expression": null,
+    "with_check_expression": "true"
+  },
+  {
+    "policy_name": "Professors can create classes for their courses",
+    "schema_name": "public",
+    "table_name": "classes",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": null,
+    "with_check_expression": "(EXISTS ( SELECT 1\n   FROM courses\n  WHERE ((courses.id = classes.course_id) AND (courses.professor_id = auth.uid()))))"
+  },
+  {
+    "policy_name": "Professors can view their course classes",
+    "schema_name": "public",
+    "table_name": "classes",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM courses\n  WHERE ((courses.id = classes.course_id) AND (courses.professor_id = auth.uid()))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Students can view enrolled classes",
+    "schema_name": "public",
+    "table_name": "classes",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM enrollments\n  WHERE ((enrollments.class_id = classes.id) AND (enrollments.user_id = auth.uid()))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all contracts",
+    "schema_name": "public",
+    "table_name": "contracts",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Authenticated users can CRUD documents",
+    "schema_name": "public",
+    "table_name": "course_documents",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.role() = 'authenticated'::text)",
+    "with_check_expression": "(auth.role() = 'authenticated'::text)"
+  },
+  {
+    "policy_name": "Admins can manage all courses",
+    "schema_name": "public",
+    "table_name": "courses",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable read access for all users",
+    "schema_name": "public",
+    "table_name": "courses",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can create courses",
+    "schema_name": "public",
+    "table_name": "courses",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": null,
+    "with_check_expression": "((auth.uid() = professor_id) AND (EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = ANY (ARRAY['admin'::text, 'professor'::text]))))))"
+  },
+  {
+    "policy_name": "Professors can update their own courses",
+    "schema_name": "public",
+    "table_name": "courses",
+    "command": "UPDATE",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = professor_id)",
+    "with_check_expression": "(auth.uid() = professor_id)"
+  },
+  {
+    "policy_name": "Admins can manage all taught courses",
+    "schema_name": "public",
+    "table_name": "courses_taught",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can view their own taught courses",
+    "schema_name": "public",
+    "table_name": "courses_taught",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = professor_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage custom forms",
+    "schema_name": "public",
+    "table_name": "custom_forms",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can create custom forms",
+    "schema_name": "public",
+    "table_name": "custom_forms",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": null,
+    "with_check_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = ANY (ARRAY['admin'::text, 'professor'::text])))))"
+  },
+  {
+    "policy_name": "Public can view custom forms",
+    "schema_name": "public",
+    "table_name": "custom_forms",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all documents",
+    "schema_name": "public",
+    "table_name": "documents",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "is_admin()",
+    "with_check_expression": "is_admin()"
+  },
+  {
+    "policy_name": "Users can create their own documents",
+    "schema_name": "public",
+    "table_name": "documents",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": null,
+    "with_check_expression": "(auth.uid() = user_id)"
+  },
+  {
+    "policy_name": "Users can view their own documents",
+    "schema_name": "public",
+    "table_name": "documents",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable delete for users based on user_id",
+    "schema_name": "public",
+    "table_name": "enrollments",
+    "command": "DELETE",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(( SELECT auth.uid() AS uid) = user_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable insert for authenticated users only",
+    "schema_name": "public",
+    "table_name": "enrollments",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "using_expression": null,
+    "with_check_expression": "true"
+  },
+  {
+    "policy_name": "Enable read access for all users",
+    "schema_name": "public",
+    "table_name": "enrollments",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Policy with table joins",
+    "schema_name": "public",
+    "table_name": "enrollments",
+    "command": "UPDATE",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(( SELECT auth.uid() AS uid) IN ( SELECT members.user_id\n   FROM members\n  WHERE (members.team_id = enrollments.id)))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all financial transactions",
+    "schema_name": "public",
+    "table_name": "financial_transactions",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Users can view their own financial transactions",
+    "schema_name": "public",
+    "table_name": "financial_transactions",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(profile_id = auth.uid())",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins podem gerenciar documentos gerais",
+    "schema_name": "public",
+    "table_name": "general_documents",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "((auth.jwt() ->> 'user_role'::text) = 'admin'::text)",
+    "with_check_expression": "((auth.jwt() ->> 'user_role'::text) = 'admin'::text)"
+  },
+  {
+    "policy_name": "Usuários autenticados podem ver documentos gerais",
+    "schema_name": "public",
+    "table_name": "general_documents",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.role() = 'authenticated'::text)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all lessons",
+    "schema_name": "public",
+    "table_name": "lessons",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can manage lessons in their modules",
+    "schema_name": "public",
+    "table_name": "lessons",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM (modules m\n     JOIN courses c ON ((c.id = m.course_id)))\n  WHERE ((m.id = lessons.module_id) AND (c.professor_id = auth.uid()))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Public can view lessons",
+    "schema_name": "public",
+    "table_name": "lessons",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable delete for users based on user_id",
+    "schema_name": "public",
+    "table_name": "members",
+    "command": "DELETE",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(( SELECT auth.uid() AS uid) = user_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable insert for authenticated users only",
+    "schema_name": "public",
+    "table_name": "members",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "using_expression": null,
+    "with_check_expression": "true"
+  },
+  {
+    "policy_name": "Enable read access for all users",
+    "schema_name": "public",
+    "table_name": "members",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable insert for authenticated users only",
+    "schema_name": "public",
+    "table_name": "module_prerequisites",
+    "command": "INSERT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{authenticated}",
+    "using_expression": null,
+    "with_check_expression": "true"
+  },
+  {
+    "policy_name": "Enable read access for all users",
+    "schema_name": "public",
+    "table_name": "module_prerequisites",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all modules",
+    "schema_name": "public",
+    "table_name": "modules",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can manage their course modules",
+    "schema_name": "public",
+    "table_name": "modules",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM courses\n  WHERE ((courses.id = modules.course_id) AND (courses.professor_id = auth.uid()))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Public can view modules",
+    "schema_name": "public",
+    "table_name": "modules",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all professor details",
+    "schema_name": "public",
+    "table_name": "professor_details",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can update their own details",
+    "schema_name": "public",
+    "table_name": "professor_details",
+    "command": "UPDATE",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can view their own details",
+    "schema_name": "public",
+    "table_name": "professor_details",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = user_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all professor payments",
+    "schema_name": "public",
+    "table_name": "professor_payments",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can view their own payments",
+    "schema_name": "public",
+    "table_name": "professor_payments",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(auth.uid() = professor_id)",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all profile scholarships",
+    "schema_name": "public",
+    "table_name": "profile_scholarships",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all quizzes",
+    "schema_name": "public",
+    "table_name": "quizzes",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Enable read access for all users",
+    "schema_name": "public",
+    "table_name": "quizzes",
+    "command": "SELECT",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "true",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Professors can manage quizzes in their courses",
+    "schema_name": "public",
+    "table_name": "quizzes",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM courses c\n  WHERE ((c.id = quizzes.course_id) AND (c.professor_id = auth.uid()))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all scholarships",
+    "schema_name": "public",
+    "table_name": "scholarships",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  },
+  {
+    "policy_name": "Admins can manage all service providers",
+    "schema_name": "public",
+    "table_name": "service_providers",
+    "command": "ALL",
+    "is_permissive": "PERMISSIVE",
+    "roles": "{public}",
+    "using_expression": "(EXISTS ( SELECT 1\n   FROM profiles\n  WHERE ((profiles.id = auth.uid()) AND (profiles.role = 'admin'::text))))",
+    "with_check_expression": null
+  }
+]
