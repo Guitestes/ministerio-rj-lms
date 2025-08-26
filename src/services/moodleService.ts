@@ -1,46 +1,80 @@
-/**
- * Represents a simplified certificate structure fetched from Moodle.
- */
-export interface MoodleCertificate {
+import { supabase } from '@/integrations/supabase/client';
+
+import type { MoodleIntegration, MoodleCertificate } from '@/types/database';
+
+export interface MoodleCertificateResponse {
   courseName: string;
   issueDate: string;
   grade?: string;
   moodleCourseId: string;
 }
 
-/**
- * Mocked Moodle Service.
- * This service simulates fetching certificate data from a Moodle instance.
- * It should be replaced with a real implementation when the Moodle API details are available.
- */
-const getMoodleCertificates = (userId: string): Promise<MoodleCertificate[]> => {
-  console.log(`[MOCK] Fetching Moodle certificates for user: ${userId}`);
-
-  // Fake data representing certificates from Moodle
-  const fakeMoodleCerts: MoodleCertificate[] = [
-    {
-      courseName: 'Introdução à Culinária Moodle',
-      issueDate: '2023-05-20T10:00:00Z',
-      grade: '95%',
-      moodleCourseId: 'moodle-course-1',
-    },
-    {
-      courseName: 'Moodle Avançado para Educadores',
-      issueDate: '2023-08-15T14:30:00Z',
-      grade: 'Aprovado',
-      moodleCourseId: 'moodle-course-2',
-    },
-  ];
-
-  // Return a promise that resolves after a short delay to simulate a network request
-  return new Promise(resolve => {
-    setTimeout(() => {
-      console.log('[MOCK] Moodle certificates fetched successfully.');
-      resolve(fakeMoodleCerts);
-    }, 1200); // 1.2 second delay
-  });
-};
-
 export const moodleService = {
-  getMoodleCertificates,
+  async getIntegration(studentId: string, courseId: string): Promise<MoodleIntegration | null> {
+    const { data, error } = await supabase
+      .from('moodle_integrations')
+      .select('*')
+      .eq('student_id', studentId)
+      .eq('course_id', courseId)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
+  },
+
+  async createIntegration(studentId: string, courseId: string, moodleUserId: string): Promise<MoodleIntegration> {
+    const { data, error } = await supabase
+      .from('moodle_integrations')
+      .insert({
+        student_id: studentId,
+        course_id: courseId,
+        moodle_user_id: moodleUserId,
+        auto_enroll: true,
+        last_sync: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async syncEnrollment(studentId: string, courseId: string): Promise<void> {
+    const integration = await this.getIntegration(studentId, courseId);
+    if (!integration || !integration.auto_enroll) return;
+
+    // Lógica de sincronização com API Moodle (implementar chamada real à API Moodle aqui)
+    // Por enquanto, simular sincronização
+    console.log(`Sincronizando matrícula para student ${studentId} no curso Moodle ${courseId}`);
+
+    const { error } = await supabase
+      .from('moodle_integrations')
+      .update({ last_sync: new Date().toISOString() })
+      .eq('id', integration.id);
+
+    if (error) throw error;
+  },
+
+  async getMoodleCertificates(userId: string): Promise<MoodleCertificateResponse[]> {
+    // Implementar chamada real à API Moodle para obter certificados
+    // Por enquanto, manter mock como fallback
+    console.log(`Buscando certificados Moodle para user: ${userId}`);
+
+    // Exemplo de integração futura com API Moodle
+    // const response = await fetchMoodleAPI(`/certificates?userId=${userId}`);
+    // return response.certificates;
+
+    // Mock temporário
+    return [
+      {
+        courseName: 'Curso Moodle Integrado',
+        issueDate: new Date().toISOString(),
+        grade: '90%',
+        moodleCourseId: 'moodle-001',
+      }
+    ];
+  }
 };

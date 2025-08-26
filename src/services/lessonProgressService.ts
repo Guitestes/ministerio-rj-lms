@@ -90,6 +90,7 @@ export const lessonProgressService = {
               
             if (createError) {
               console.error('Erro ao criar perfil do usuário:', createError);
+              throw createError; // Propagar erro
             } else {
               console.log(`Perfil do usuário ${userId} criado automaticamente`);
             }
@@ -97,7 +98,7 @@ export const lessonProgressService = {
         }
       } catch (profileCheckError) {
         console.error('Erro ao verificar perfil do usuário:', profileCheckError);
-        // Continuar mesmo com erro
+        throw profileCheckError; // Propagar erro
       }
       
       // Verificar se já existe um registro de progresso
@@ -110,7 +111,7 @@ export const lessonProgressService = {
 
       if (checkError) {
         console.error('Erro ao verificar progresso existente:', checkError);
-        // Continuar mesmo com erro
+        throw checkError;
       }
 
       const now = new Date().toISOString();
@@ -118,113 +119,60 @@ export const lessonProgressService = {
       if (existingProgress) {
         console.log(`Atualizando progresso existente para aula ${lessonId}`);
         // Atualizar o registro existente
-        try {
-          const { data, error } = await supabase
-            .from('lesson_progress')
-            .update({
-              completed: true,
-              completed_at: now
-            })
-            .eq('id', existingProgress.id)
-            .select()
-            .single();
-
-          if (error) {
-            console.error('Erro ao atualizar progresso:', error);
-            throw error;
-          }
-          
-          return {
-            id: data.id,
-            userId: data.user_id,
-            lessonId: data.lesson_id,
-            completed: data.completed,
-            completedAt: data.completed_at
-          };
-        } catch (updateError) {
-          console.error('Erro ao atualizar progresso (capturado):', updateError);
-          
-          // Retornar o progresso existente em caso de erro
-          return {
-            id: existingProgress.id,
-            userId: existingProgress.user_id,
-            lessonId: existingProgress.lesson_id,
+        const { data, error } = await supabase
+          .from('lesson_progress')
+          .update({
             completed: true,
-            completedAt: existingProgress.completed_at || now
-          };
+            completed_at: now
+          })
+          .eq('id', existingProgress.id)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Erro ao atualizar progresso:', error);
+          throw error;
         }
+        
+        return {
+          id: data.id,
+          userId: data.user_id,
+          lessonId: data.lesson_id,
+          completed: data.completed,
+          completedAt: data.completed_at
+        };
       } else {
         console.log(`Criando novo progresso para aula ${lessonId}`);
         // Criar um novo registro
-        try {
-          const progressData = {
-            user_id: userId,
-            lesson_id: lessonId,
-            completed: true,
-            completed_at: now
-          };
-          
-          const { data, error } = await supabase
-            .from('lesson_progress')
-            .insert(progressData)
-            .select()
-            .single();
+        const progressData = {
+          user_id: userId,
+          lesson_id: lessonId,
+          completed: true,
+          completed_at: now
+        };
+        
+        const { data, error } = await supabase
+          .from('lesson_progress')
+          .insert(progressData)
+          .select()
+          .single();
 
-          if (error) {
-            console.error('Erro ao criar progresso:', error);
-            
-            // Abordagem alternativa: tentar inserir sem retornar dados
-            const { error: altError } = await supabase
-              .from('lesson_progress')
-              .insert(progressData);
-              
-            if (altError) {
-              console.error('Erro na abordagem alternativa:', altError);
-              throw altError;
-            }
-            
-            // Se chegou aqui, a inserção foi bem-sucedida, mas não temos os dados
-            // Criar um objeto de progresso com os dados que temos
-            return {
-              id: `temp-${Date.now()}`, // ID temporário
-              userId,
-              lessonId,
-              completed: true,
-              completedAt: now
-            };
-          }
-          
-          return {
-            id: data.id,
-            userId: data.user_id,
-            lessonId: data.lesson_id,
-            completed: data.completed,
-            completedAt: data.completed_at
-          };
-        } catch (insertError) {
-          console.error('Erro ao criar progresso (capturado):', insertError);
-          
-          // Criar um objeto de progresso com os dados que temos
-          return {
-            id: `temp-${Date.now()}`, // ID temporário
-            userId,
-            lessonId,
-            completed: true,
-            completedAt: now
-          };
+        if (error) {
+          console.error('Erro ao criar progresso:', error);
+          throw error;
         }
+        
+        return {
+          id: data.id,
+          userId: data.user_id,
+          lessonId: data.lesson_id,
+          completed: data.completed,
+          completedAt: data.completed_at
+        };
       }
     } catch (error) {
       console.error('Erro ao marcar aula como concluída:', error);
-      
-      // Retornar um objeto de progresso fictício para não quebrar a interface
-      return {
-        id: `error-${Date.now()}`,
-        userId,
-        lessonId,
-        completed: true,
-        completedAt: new Date().toISOString()
-      };
+      throw error; // Propagar o erro para o chamador
     }
   },
 

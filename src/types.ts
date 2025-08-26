@@ -83,8 +83,13 @@ export interface Profile {
   company?: string;
   location?: string;
   website?: string;
-  createdAt: string;
-  updatedAt: string;
+  cpf?: string;
+  academicBackground?: string;
+  professionalExperience?: string;
+  qualifications?: Record<string, any>;
+  teachingSpecialties?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface User {
@@ -92,6 +97,7 @@ export interface User {
   name: string;
   email: string;
   role: string;
+  phone?: string;
   avatarUrl?: string;
   bio?: string;
   jobTitle?: string;
@@ -224,18 +230,7 @@ export interface LessonProgress {
   completedAt?: string;
 }
 
-export interface Profile {
-  id: string;
-  name?: string;
-  bio?: string;
-  avatarUrl?: string;
-  jobTitle?: string;
-  company?: string;
-  location?: string;
-  website?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+
 
 export interface User {
   id: string;

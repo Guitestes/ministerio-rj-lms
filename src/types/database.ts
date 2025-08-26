@@ -253,6 +253,55 @@ export interface Database {
           updated_at: string;
         };
       };
+      lesson_plans: {
+        Row: {
+          id: string;
+          lesson_id: string;
+          content: string;
+          document_links: string[];
+          created_at: string;
+          updated_at: string;
+        };
+      };
+      audiovisual_materials: {
+        Row: {
+          id: string;
+          lesson_id: string;
+          title: string;
+          url: string;
+          type: string;
+          created_at: string;
+        };
+      };
+      custom_evaluation_forms: {
+        Row: {
+          id: string;
+          lesson_id: string;
+          title: string;
+          questions: any[];
+          form_name: string;
+          form_content: any;
+          created_at: string;
+        };
+      };
+      moodle_integrations: {
+        Row: {
+          id: string;
+          course_id: string;
+          moodle_course_id: string;
+          sync_status: string;
+          last_synced: string;
+        };
+      };
+      moodle_certificates: {
+        Row: {
+          id: string;
+          user_id: string;
+          moodle_course_id: string;
+          issue_date: string;
+          certificate_url: string;
+        };
+      };
       quiz_responses: {
         Row: {
           id: string;
@@ -401,3 +450,9 @@ export interface Database {
     };
   };
 }
+
+export type LessonPlan = Database['public']['Tables']['lesson_plans']['Row'];
+export type AudiovisualMaterial = Database['public']['Tables']['audiovisual_materials']['Row'];
+export type CustomEvaluationForm = Database['public']['Tables']['custom_evaluation_forms']['Row'];
+export type MoodleIntegration = Database['public']['Tables']['moodle_integrations']['Row'];
+export type MoodleCertificate = Database['public']['Tables']['moodle_certificates']['Row'];

@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { User } from "@/types";
 import {
   DialogContent,
@@ -27,6 +28,10 @@ interface UserFormData {
   email:string;
   role: "admin" | "student" | "professor";
   password?: string;
+  academicBackground?: string;
+  professionalExperience?: string;
+  qualifications?: string;
+  teachingSpecialties?: string;
 }
 
 interface UserFormProps {
@@ -42,12 +47,16 @@ const UserForm = ({ initialData, isEditing, onSubmit }: UserFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [generatePassword, setGeneratePassword] = useState(true);
 
+  const handleArrayInput = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   useEffect(() => {
     setFormData(initialData);
     setErrors({});
   }, [initialData]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
@@ -107,6 +116,15 @@ const UserForm = ({ initialData, isEditing, onSubmit }: UserFormProps) => {
     
     if (!isEditing && !generatePassword && (!formData.password || formData.password.length < 6)) {
       newErrors.password = 'Senha deve ter pelo menos 6 caracteres';
+    }
+    
+    if (formData.role === 'professor') {
+      if (!formData.academicBackground?.trim()) {
+        newErrors.academicBackground = 'Formação Acadêmica é obrigatória';
+      }
+      if (!formData.professionalExperience?.trim()) {
+        newErrors.professionalExperience = 'Experiência Profissional é obrigatória';
+      }
     }
     
     setErrors(newErrors);
@@ -201,6 +219,46 @@ const UserForm = ({ initialData, isEditing, onSubmit }: UserFormProps) => {
             </SelectContent>
           </Select>
         </div>
+        {formData.role === 'professor' && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="academicBackground">Formação Acadêmica</Label>
+              <Textarea
+                id="academicBackground"
+                name="academicBackground"
+                value={formData.academicBackground || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="professionalExperience">Experiência Profissional</Label>
+              <Textarea
+                id="professionalExperience"
+                name="professionalExperience"
+                value={formData.professionalExperience || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="qualifications">Qualificações (separadas por vírgula)</Label>
+              <Input
+                id="qualifications"
+                name="qualifications"
+                value={formData.qualifications || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="teachingSpecialties">Especialidades de Ensino (separadas por vírgula)</Label>
+              <Input
+                id="teachingSpecialties"
+                name="teachingSpecialties"
+                value={formData.teachingSpecialties || ''}
+                onChange={handleInputChange}
+              />
+            </div>
+          </>
+        )}
         {!isEditing && (
           <div className="space-y-3">
             <div className="flex items-center space-x-2">

@@ -9,6 +9,7 @@ import ServiceProviderForm from '@/components/admin/service-providers/ServicePro
 import ContractsManager from '@/components/admin/service-providers/ContractsManager';
 import PriceTableManager from '@/components/admin/service-providers/PriceTableManager';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AdminProviderReports from './AdminProviderReports';
 
 const AdminServiceProviders = () => {
   const [providers, setProviders] = useState<ServiceProvider[]>([]);
@@ -107,18 +108,29 @@ const AdminServiceProviders = () => {
         </Dialog>
       </div>
 
-      <Card>
-        {isLoading ? (
-          <p>Carregando...</p>
-        ) : (
-          <ServiceProvidersTable
-            providers={providers}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onSelect={handleSelectProvider}
-          />
-        )}
-      </Card>
+      <Tabs defaultValue="providers">
+        <TabsList>
+          <TabsTrigger value="providers">Prestadores</TabsTrigger>
+          <TabsTrigger value="performance">Desempenho</TabsTrigger>
+        </TabsList>
+        <TabsContent value="providers">
+          <Card>
+            {isLoading ? (
+              <p>Carregando...</p>
+            ) : (
+              <ServiceProvidersTable
+                providers={providers}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onSelect={handleSelectProvider}
+              />
+            )}
+          </Card>
+        </TabsContent>
+        <TabsContent value="performance">
+          <AdminProviderReports />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

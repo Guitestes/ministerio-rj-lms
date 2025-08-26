@@ -16,7 +16,13 @@ import { serviceProviderService } from '@/services/serviceProviderService';
 import { FinancialTransaction, Scholarship, ProfileScholarship } from '@/types/financial';
 import { User } from '@/types';
 import { ServiceProvider } from '@/services/serviceProviderService';
-import { PlusCircle, Trash2, Upload } from 'lucide-react';
+import { PlusCircle, Trash2, Upload, BarChart3, CreditCard, Settings, FileText } from 'lucide-react';
+
+// Import new financial components
+import BulkOperations from '@/components/financial/BulkOperations';
+import FinancialReports from '@/components/financial/FinancialReports';
+import BankSlipManagement from '@/components/financial/BankSlipManagement';
+import BillingAutomation from '@/components/financial/BillingAutomation';
 
 type ProfileScholarshipWithNames = ProfileScholarship & { profiles: { name: string }, scholarships: { name: string }};
 
@@ -44,15 +50,43 @@ const AdminFinancial: React.FC = () => {
     <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">Gestão Financeira</h1>
         <Tabs defaultValue="transactions">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="transactions">Transações</TabsTrigger>
                 <TabsTrigger value="scholarships">Bolsas de Estudo</TabsTrigger>
+                <TabsTrigger value="reports">
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    Relatórios
+                </TabsTrigger>
+                <TabsTrigger value="bank-slips">
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Boletos
+                </TabsTrigger>
+                <TabsTrigger value="bulk-operations">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Operações em Lote
+                </TabsTrigger>
+                <TabsTrigger value="automation">
+                    <Settings className="w-4 h-4 mr-2" />
+                    Automação
+                </TabsTrigger>
             </TabsList>
             <TabsContent value="transactions">
                 <TransactionsTab />
             </TabsContent>
             <TabsContent value="scholarships">
                 <ScholarshipsTab />
+            </TabsContent>
+            <TabsContent value="reports">
+                <FinancialReports />
+            </TabsContent>
+            <TabsContent value="bank-slips">
+                <BankSlipManagement />
+            </TabsContent>
+            <TabsContent value="bulk-operations">
+                <BulkOperations />
+            </TabsContent>
+            <TabsContent value="automation">
+                <BillingAutomation />
             </TabsContent>
         </Tabs>
     </div>

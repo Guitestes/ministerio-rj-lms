@@ -67,13 +67,14 @@ import FormBuilder from "./pages/admin/FormBuilder";
 import AdminServiceProviders from "./pages/admin/AdminServiceProviders";
 import AdminFinancial from "./pages/admin/AdminFinancial";
 import AdminReports from "./pages/admin/AdminReports";
-import AdminProviderReports from "./pages/admin/AdminProviderReports";
+
 import NotFound from "./pages/NotFound";
 import AdminCalendar from "./pages/admin/AdminCalendar";
 import AdminRooms from "./pages/admin/AdminRooms";
 import AdminMarketing from "./pages/admin/AdminMarketing";
 import EmailMetrics from "./pages/EmailMetrics";
 import EmailTesting from "./pages/admin/EmailTesting";
+import BankSlipView from "./pages/BankSlipView";
 
 // Usando o queryClient global definido em utils/queryClient.ts
 
@@ -116,6 +117,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/verify-document" element={<VerifyDocument />} />
+                <Route path="/boleto/:id" element={<BankSlipView />} />
                 
                 {/* Protected student routes */}
                 <Route element={<ProtectedRoute />}>
@@ -176,7 +178,7 @@ const App = () => {
                   <Route path="/admin/class/:classId/events" element={<ClassEventManager />} />
                   <Route path="/admin/course/:courseId/form" element={<FormBuilder />} />
                   <Route path="/admin/reports" element={<AdminReports />} />
-                  <Route path="/admin/provider-reports" element={<AdminProviderReports />} />
+
                   <Route path="/admin/service-providers" element={<AdminServiceProviders />} />
                   <Route path="/admin/financial" element={<AdminFinancial />} />
                   <Route path="/admin/requests" element={<AdminRequests />} />

@@ -268,7 +268,7 @@ export const getEnrolledUsers = async (courseId: string) => {
         enrollmentMap.set(e.user_id, {
             progress: e.progress,
             enrolledAt: e.enrolled_at,
-            className: e.classes?.name || 'N/A'
+            className: e.classes?.[0]?.name || 'N/A'
         });
     });
 
@@ -280,22 +280,35 @@ export const getEnrolledUsers = async (courseId: string) => {
     if (profilesError) throw profilesError;
     if (!profiles) return [];
 
-    const enrolledUsers = profiles.map(profile => {
-        const enrollmentData = enrollmentMap.get(profile.id) || {};
-        return {
-          id: profile.id,
-          name: profile.name || 'User',
-          email: profile.email || '',
-          role: profile.role || 'student',
-          avatarUrl: profile.avatar_url || '',
-          createdAt: profile.created_at || new Date().toISOString(),
-          enrolledAt: enrollmentData.enrolledAt,
-          progress: enrollmentData.progress || 0,
-          className: enrollmentData.className
-        };
-      });
+    // Buscar certificados existentes para o curso
+const { data: certificates, error: certError } = await supabase
+  .from('certificates')
+  .select('user_id')
+  .eq('course_id', courseId);
 
-    return enrolledUsers;
+if (certError) throw certError;
+
+const certifiedUserIds = new Set(certificates?.map(c => c.user_id) || []);
+
+const enrolledUsers = profiles
+  .map(profile => {
+    const enrollmentData = enrollmentMap.get(profile.id) || {};
+    return {
+      id: profile.id,
+      name: profile.name || 'User',
+      email: profile.email || '',
+      role: profile.role || 'student',
+      avatarUrl: profile.avatar_url || '',
+      createdAt: profile.created_at || new Date().toISOString(),
+      enrolledAt: enrollmentData.enrolledAt,
+      progress: enrollmentData.progress || 0,
+      className: enrollmentData.className,
+      hasCertificate: certifiedUserIds.has(profile.id)
+    };
+  })
+  .filter(user => user.progress === 100 && !user.hasCertificate);
+
+return enrolledUsers;
   } catch (error) {
     console.error('Error getting enrolled users:', error);
     toast.error('Failed to get enrolled users.');

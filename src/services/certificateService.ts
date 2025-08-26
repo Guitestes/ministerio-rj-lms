@@ -2,7 +2,6 @@ import { Certificate } from '@/types';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { requestQueue } from '@/utils/requestQueue';
-import { Certificate } from '@/types';
 
 /**
  * Interface para os dados de certificado no banco de dados
@@ -235,13 +234,7 @@ const generateCertificate = async (courseId: string, userId: string): Promise<Ce
 
     console.log(`[CERTIFICADO] Iniciando geração para usuário ${userId} no curso ${courseId}`);
 
-    // Verificar cache primeiro
-    const certCacheKey = `certificate-${userId}-${courseId}`;
-    const cachedCert = requestQueue.getCachedItem(certCacheKey);
-    if (cachedCert) {
-      console.log(`[CERTIFICADO] Usando certificado em cache: ${cachedCert.id}`);
-      return cachedCert;
-    }
+
 
     // 1. Verificar se já existe um certificado
     console.log(`[CERTIFICADO] Verificando certificado existente para usuário ${userId} no curso ${courseId}`);
@@ -249,7 +242,7 @@ const generateCertificate = async (courseId: string, userId: string): Promise<Ce
     
     if (existingCerts && existingCerts.length > 0) {
       console.log(`[CERTIFICADO] Certificado existente encontrado: ${existingCerts[0].id}`);
-      requestQueue.cacheItem(certCacheKey, existingCerts[0]);
+
       return existingCerts[0];
     }
     
@@ -344,7 +337,7 @@ const generateCertificate = async (courseId: string, userId: string): Promise<Ce
             .eq('user_id', userId)
             .single();
 
-        if (classEnrollError || !classEnrollment || classEnrollment.classes.course_id !== courseId) {
+        if (classEnrollError || !classEnrollment || (classEnrollment.classes as { course_id: string }[])?.[0]?.course_id !== courseId) {
           console.warn('[CERTIFICADO] Não foi possível encontrar a turma para validar a frequência. Ignorando a verificação de frequência.');
         } else {
           const classId = classEnrollment.class_id;
@@ -446,7 +439,7 @@ const generateCertificate = async (courseId: string, userId: string): Promise<Ce
       
       const certificate = await createCertificate(certificateData);
       console.log(`[CERTIFICADO] Certificado criado com sucesso: ${certificate.id}`);
-      requestQueue.cacheItem(certCacheKey, certificate);
+      
       
       // Notificar o usuário sobre o certificado gerado
       toast.success('Certificado gerado com sucesso! Você pode visualizá-lo na seção de certificados.');

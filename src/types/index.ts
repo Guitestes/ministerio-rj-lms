@@ -73,6 +73,7 @@ export interface User {
   name: string;
   email: string;
   role: "admin" | "professor" | "student";
+  phone?: string;
   avatar?: string | null;
   createdAt: string;
 }
@@ -92,15 +93,20 @@ export interface Certificate {
 
 export interface Profile {
   id: string;
-  userId: string;
   fullName: string;
   bio?: string;
+  avatar?: string;
   jobTitle?: string;
   company?: string;
   location?: string;
-  avatar?: string;
   website?: string;
   cpf?: string;
+  academicBackground?: string;
+  professionalExperience?: string;
+  qualifications?: Record<string, any>;
+  teachingSpecialties?: string[];
+  createdAt: string;
+  updatedAt: string;
   social?: {
     linkedin?: string;
     twitter?: string;

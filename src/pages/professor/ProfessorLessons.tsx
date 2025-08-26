@@ -12,6 +12,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Play, Plus, Search, Edit, Trash2, Clock, Eye, FileText } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import { lessonPlanService } from "@/services/lessonPlanService";
+import { audiovisualMaterialService } from "@/services/audiovisualMaterialService";
+import { customEvaluationService } from "@/services/customEvaluationService";
 
 interface Course {
   id: string;
@@ -49,6 +52,17 @@ interface Lesson {
   };
 }
 
+interface LessonFormData {
+  module_id: string;
+  title: string;
+  description: string;
+  content: string;
+  duration: string;
+  video_url: string;
+  order_number: number;
+  lesson_plan_links: string[];
+}
+
 const ProfessorLessons = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -64,14 +78,15 @@ const ProfessorLessons = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingLesson, setEditingLesson] = useState<Lesson | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LessonFormData>({
     module_id: '',
     title: '',
     description: '',
     content: '',
     duration: '',
     video_url: '',
-    order_number: 1
+    order_number: 1,
+    lesson_plan_links: []
   });
 
   useEffect(() => {
@@ -227,23 +242,31 @@ const ProfessorLessons = () => {
       content: '',
       duration: '',
       video_url: '',
-      order_number: moduleForCount
+      order_number: moduleForCount,
+      lesson_plan_links: [] // Novo campo para links de planos de aula
     });
     setIsDialogOpen(true);
   };
 
-  const handleEditLesson = (lesson: Lesson) => {
-    setEditingLesson(lesson);
-    setFormData({
-      module_id: lesson.module_id,
-      title: lesson.title,
-      description: lesson.description || '',
-      content: lesson.content || '',
-      duration: lesson.duration || '',
-      video_url: lesson.video_url || '',
-      order_number: lesson.order_number
-    });
-    setIsDialogOpen(true);
+  const handleEditLesson = async (lesson: Lesson) => {
+    try {
+      const lessonPlan = await lessonPlanService.getLessonPlan(lesson.id);
+      setEditingLesson(lesson);
+      setFormData({
+        module_id: lesson.module_id,
+        title: lesson.title,
+        description: lesson.description || '',
+        content: lesson.content || '',
+        duration: lesson.duration || '',
+        video_url: lesson.video_url || '',
+        order_number: lesson.order_number,
+        lesson_plan_links: lessonPlan?.document_links || []
+      });
+      setIsDialogOpen(true);
+    } catch (error) {
+      console.error('Erro ao carregar plano de aula:', error);
+      toast.error('Erro ao carregar dados da aula');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -257,6 +280,7 @@ const ProfessorLessons = () => {
     setIsSubmitting(true);
 
     try {
+      let lessonId;
       if (editingLesson) {
         // Atualizar aula existente
         const { error } = await supabase
@@ -273,10 +297,11 @@ const ProfessorLessons = () => {
           .eq('id', editingLesson.id);
 
         if (error) throw error;
+        lessonId = editingLesson.id;
         toast.success('Aula atualizada com sucesso!');
       } else {
         // Criar nova aula
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('lessons')
           .insert({
             module_id: formData.module_id,
@@ -286,11 +311,23 @@ const ProfessorLessons = () => {
             duration: formData.duration,
             video_url: formData.video_url,
             order_number: formData.order_number
-          });
+          })
+          .select('id')
+          .single();
 
         if (error) throw error;
+        lessonId = data.id;
         toast.success('Aula criada com sucesso!');
       }
+
+      // Integrar com novos serviços
+      let plan = await lessonPlanService.getLessonPlan(lessonId);
+      if (plan) {
+        await lessonPlanService.updateLessonPlan(plan.id, { document_links: formData.lesson_plan_links });
+      } else {
+        await lessonPlanService.createLessonPlan(lessonId, { content: '', document_links: formData.lesson_plan_links });
+      }
+      // Adicionar lógica para upload de audiovisual e criação de avaliações personalizadas conforme necessário
 
       setIsDialogOpen(false);
       loadLessons();
@@ -614,6 +651,24 @@ const ProfessorLessons = () => {
                 placeholder="Digite o conteúdo detalhado da aula"
                 rows={6}
               />
+            </div>
+
+            {/* Seção para planos de aula */}
+            <div className="space-y-2">
+              <Label>Links para Documentos do Plano de Aula</Label>
+              {/* Adicionar inputs dinâmicos para múltiplos links */}
+            </div>
+
+            {/* Seção para materiais audiovisuais */}
+            <div className="space-y-2">
+              <Label>Upload de Material Audiovisual</Label>
+              {/* Adicionar input de arquivo e chamada para audiovisualMaterialService.upload */}
+            </div>
+
+            {/* Seção para formulários de avaliação personalizados */}
+            <div className="space-y-2">
+              <Label>Formulário de Avaliação Personalizado</Label>
+              {/* Adicionar campos para criar formulário usando customEvaluationService */}
             </div>
 
             <div className="flex justify-end gap-2 pt-4">

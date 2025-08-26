@@ -175,14 +175,61 @@ export const calendarService = {
   },
 
   async getEventTargetsForCourse(courseId: string): Promise<{ target_id: string, target_name: string, target_type: 'class' | 'student' }[]> {
-    const { data, error } = await supabase.rpc('get_event_targets_for_course', {
-      p_course_id: courseId,
-    });
-    if (error) {
+    try {
+      const targets: { target_id: string, target_name: string, target_type: 'class' | 'student' }[] = [];
+      
+      // Get all classes for this course
+      const { data: classes, error: classesError } = await supabase
+        .from('classes')
+        .select('id, name')
+        .eq('course_id', courseId);
+      
+      if (classesError) {
+        console.error('Error fetching classes:', classesError);
+      } else if (classes) {
+        classes.forEach(cls => {
+          targets.push({
+            target_id: cls.id,
+            target_name: cls.name,
+            target_type: 'class'
+          });
+        });
+      }
+      
+      // Get all students enrolled in classes of this course
+      const { data: enrollments, error: enrollmentsError } = await supabase
+        .from('enrollments')
+        .select(`
+          user_id,
+          profiles!inner(id, name)
+        `)
+        .eq('course_id', courseId);
+      
+      if (enrollmentsError) {
+        console.error('Error fetching enrollments:', enrollmentsError);
+      } else if (enrollments) {
+        // Remove duplicates by user_id
+        const uniqueStudents = new Map();
+        enrollments.forEach(enrollment => {
+          if (enrollment.profiles && !uniqueStudents.has(enrollment.user_id)) {
+            const profile = Array.isArray(enrollment.profiles) ? enrollment.profiles[0] : enrollment.profiles;
+            if (profile) {
+              uniqueStudents.set(enrollment.user_id, {
+                target_id: profile.id,
+                target_name: profile.name,
+                target_type: 'student' as const
+              });
+            }
+          }
+        });
+        targets.push(...Array.from(uniqueStudents.values()));
+      }
+      
+      return targets;
+    } catch (error) {
       console.error('Error fetching event targets:', error);
       throw new Error('Failed to fetch event targets.');
     }
-    return data;
   },
 
   async getEventsForProfessor(professorId: string): Promise<CalendarEvent[]> {

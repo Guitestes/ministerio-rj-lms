@@ -175,7 +175,26 @@ export const moduleService = {
         });
       }
       
-      // Montar a estrutura final
+      // Montar a estrutura final com progresso
+      let completedLessons = new Set();
+      if (userId && allLessons?.length > 0) {
+        console.log(`DIAGNÓSTICO: Buscando progresso de aulas para usuário ${userId}...`);
+        const lessonIds = allLessons.map(l => l.id);
+        const { data: progressData, error: progressError } = await supabase
+          .from('lesson_progress')
+          .select('lesson_id')
+          .eq('user_id', userId)
+          .eq('completed', true)
+          .in('lesson_id', lessonIds);
+        
+        if (progressError) {
+          console.error(`DIAGNÓSTICO: Erro ao buscar progresso:`, progressError);
+        } else if (progressData) {
+          completedLessons = new Set(progressData.map(p => p.lesson_id));
+          console.log(`DIAGNÓSTICO: Encontradas ${completedLessons.size} aulas concluídas`);
+        }
+      }
+      
       const modulesWithLessons: Module[] = modules.map((module) => {
         const moduleLessons = lessonsByModule.get(module.id) || [];
         console.log(`DIAGNÓSTICO: Módulo ${module.title} (${module.id}) tem ${moduleLessons.length} aulas`);
@@ -195,11 +214,10 @@ export const moduleService = {
             videoUrl: lesson.video_url || '',
             content: lesson.content || '',
             order: lesson.order_number,
-            isCompleted: false
+            isCompleted: userId ? completedLessons.has(lesson.id) : false
           }))
         };
       });
-
       const sorted = modulesWithLessons.sort((a, b) => a.order - b.order);
       cacheManager.set(cacheKey, sorted, 60); // cache por 60s
       return sorted;

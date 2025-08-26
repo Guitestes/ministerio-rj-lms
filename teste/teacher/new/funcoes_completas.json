@@ -1,50 +1,356 @@
 [
   {
+    "function_name": "calculate_campaign_roi",
+    "arguments": "p_campaign_id uuid",
+    "return_type": "numeric",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "calculate_lead_score",
+    "arguments": "lead_uuid uuid",
+    "return_type": "integer",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "check_contract_expirations",
+    "arguments": "",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "check_low_attendance",
+    "arguments": "",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "check_schedule_conflict",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "convert_lead_to_user",
+    "arguments": "p_lead_id uuid, p_password text",
+    "return_type": "uuid",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "convert_lead_to_user",
+    "arguments": "lead_uuid uuid, user_uuid uuid",
+    "return_type": "boolean",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "create_ticket_status_change_notification",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "ensure_user_profile",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "execute_request_action",
+    "arguments": "p_request_id uuid",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_academic_works_summary",
+    "arguments": "start_date_param text, end_date_param text, origin_param character varying, nature_param character varying, period_type character varying",
+    "return_type": "TABLE(period_label text, total_works bigint, origin character varying, nature character varying, average_grade numeric)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_all_users",
+    "arguments": "",
+    "return_type": "TABLE(id uuid, name text, email text, role text, created_at timestamp with time zone, avatar_url text)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_attendance_list",
+    "arguments": "course_id_param uuid, class_id_param uuid",
+    "return_type": "TABLE(student_id uuid, student_name text, student_email text, course_name text, class_name text, enrollment_date timestamp with time zone, attendance_percentage numeric, total_lessons bigint, attended_lessons bigint, position_name character varying)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_certificate_count",
+    "arguments": "course_id uuid",
+    "return_type": "integer",
+    "language": "sql"
+  },
+  {
+    "function_name": "get_certificates_summary",
+    "arguments": "start_date_param text, end_date_param text, course_id_param uuid, period_type character varying",
+    "return_type": "TABLE(period_label text, course_name text, total_certificates bigint, internal_certificates bigint, moodle_certificates bigint)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_certification_report",
+    "arguments": "course_id_param uuid, segment_param character varying, start_date_param date, end_date_param date, status_param character varying",
+    "return_type": "TABLE(course_name text, segment_name character varying, total_enrolled bigint, total_completed bigint, total_certified bigint, certification_percentage numeric, completion_percentage numeric)",
+    "language": "plpgsql"
+  },
+  {
     "function_name": "get_document_by_auth_code",
-    "schema_name": "public",
     "arguments": "auth_code text",
-    "return_type": "SETOF documents"
+    "return_type": "SETOF documents",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_dropout_students",
+    "arguments": "class_id_param uuid, course_id_param uuid, segment_param character varying, min_frequency numeric",
+    "return_type": "TABLE(student_id uuid, student_name text, student_email text, class_name text, course_name text, segment_name character varying, enrollment_date timestamp with time zone, progress_percentage numeric, last_access timestamp with time zone, position_name character varying)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_enrollment_by_position",
+    "arguments": "start_date_param date, end_date_param date, course_id_param uuid, period_type character varying",
+    "return_type": "TABLE(period_label text, position_name text, position_category text, total_enrollments bigint, active_enrollments bigint, completed_enrollments bigint)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_evaluation_results",
+    "arguments": "start_date_param text, end_date_param text, evaluation_type_param character varying, course_id_param uuid",
+    "return_type": "TABLE(evaluation_type character varying, course_name text, class_name text, average_rating numeric, total_evaluations bigint, rating_distribution jsonb)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_evasion_report",
+    "arguments": "course_id uuid",
+    "return_type": "TABLE(student_id uuid, dropout_date date)",
+    "language": "sql"
+  },
+  {
+    "function_name": "get_event_targets_for_course",
+    "arguments": "p_course_id uuid",
+    "return_type": "TABLE(target_id uuid, target_name text, target_type text)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_expense_report",
+    "arguments": "course_id_param uuid, class_id_param uuid, start_date_param text, end_date_param text",
+    "return_type": "TABLE(course_id uuid, course_name text, class_id uuid, class_name text, course_type text, tutor_expenses numeric, resource_expenses numeric, total_expenses numeric, period text)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_final_grades_report",
+    "arguments": "course_id_param uuid, class_id_param uuid, segment_param character varying, start_date_param text, end_date_param text",
+    "return_type": "TABLE(student_id uuid, student_name text, course_name text, class_name text, segment_name character varying, final_grade numeric, grade_status text, completion_date timestamp with time zone, position_name character varying)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_financial_balance",
+    "arguments": "start_date date, end_date date",
+    "return_type": "numeric",
+    "language": "sql"
+  },
+  {
+    "function_name": "get_lead_count",
+    "arguments": "start_date date, end_date date",
+    "return_type": "integer",
+    "language": "sql"
+  },
+  {
+    "function_name": "get_provider_performance",
+    "arguments": "",
+    "return_type": "TABLE(provider_id uuid, provider_name text, average_score numeric, total_contracts bigint)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_quantitative_summary",
+    "arguments": "start_date_param text, end_date_param text, origin_param character varying, nature_param character varying, period_type character varying",
+    "return_type": "TABLE(period_label text, total_courses bigint, total_classes bigint, total_lessons bigint, total_completed_lessons bigint, origin character varying, nature character varying)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_registered_students",
+    "arguments": "course_id_param text, class_id_param text, segment_param text",
+    "return_type": "TABLE(student_id uuid, student_name text, student_email text, student_role text, registration_date timestamp with time zone, course_name text, class_name text, enrollment_status text, last_access timestamp with time zone)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_revenue_forecast",
+    "arguments": "month integer, year integer",
+    "return_type": "numeric",
+    "language": "sql"
+  },
+  {
+    "function_name": "get_statistical_report",
+    "arguments": "start_date_param text, end_date_param text",
+    "return_type": "TABLE(period text, total_students bigint, total_courses bigint, total_classes bigint, active_students bigint, completed_courses bigint)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_student_progress",
+    "arguments": "course_id_param text, class_id_param text, segment_param text",
+    "return_type": "TABLE(student_id uuid, student_name text, student_email text, course_name text, class_name text, enrollment_date timestamp with time zone, progress_percentage numeric, status text, last_access timestamp with time zone)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_students_near_completion",
+    "arguments": "class_id_param uuid, course_id_param uuid, segment_param character varying, min_progress numeric, max_progress numeric",
+    "return_type": "TABLE(student_id uuid, student_name text, student_email text, class_name text, course_name text, segment_name character varying, progress_percentage numeric, remaining_percentage numeric, estimated_completion_date date, position_name character varying)",
+    "language": "plpgsql"
   },
   {
     "function_name": "get_teams_for_user",
-    "schema_name": "public",
     "arguments": "user_id uuid",
-    "return_type": "TABLE(team_id uuid)"
+    "return_type": "TABLE(team_id uuid)",
+    "language": "sql"
+  },
+  {
+    "function_name": "get_trained_students_by_period",
+    "arguments": "start_date_param text, end_date_param text, period_type character varying",
+    "return_type": "TABLE(period_label text, student_id uuid, student_name text, completed_courses bigint, total_hours numeric, position_name character varying)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_training_hours_report",
+    "arguments": "start_date_param text, end_date_param text, course_id_param uuid, student_id_param uuid, course_type_param text",
+    "return_type": "TABLE(student_id uuid, student_name text, course_id uuid, course_name text, course_type text, total_hours numeric, completed_hours numeric, progress_percentage numeric, period text)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_tutor_payments",
+    "arguments": "course_id_param uuid, class_id_param uuid, tutor_id_param uuid, start_date_param text, end_date_param text",
+    "return_type": "TABLE(tutor_id uuid, tutor_name text, course_name text, class_name text, total_lessons bigint, total_evaluations bigint, lesson_payment numeric, evaluation_payment numeric, total_payment numeric, period_start date, period_end date)",
+    "language": "plpgsql"
   },
   {
     "function_name": "get_user_final_grades",
-    "schema_name": "public",
     "arguments": "user_id_param uuid, course_id_param uuid",
-    "return_type": "TABLE(user_id uuid, user_name text, course_title text, quiz_title text, score numeric)"
+    "return_type": "TABLE(user_id uuid, user_name text, course_title text, quiz_title text, score numeric)",
+    "language": "plpgsql"
   },
   {
     "function_name": "get_user_transcript_data",
-    "schema_name": "public",
     "arguments": "user_id_param uuid",
-    "return_type": "TABLE(course_id uuid, course_title text, enrollment_status text, final_grade numeric, completion_date timestamp with time zone)"
+    "return_type": "TABLE(course_id uuid, course_title text, enrollment_status text, final_grade numeric, completion_date timestamp with time zone)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_users_with_roles",
+    "arguments": "",
+    "return_type": "TABLE(id uuid, name text, email text, is_admin boolean, is_professor boolean)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "get_workload_by_class",
+    "arguments": "course_id_param uuid, class_id_param uuid, segment_param character varying, status_param character varying",
+    "return_type": "TABLE(class_id uuid, class_name text, course_name text, segment_name character varying, total_students bigint, course_workload_hours numeric, total_workload_hours numeric, average_progress numeric, class_status text)",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "handle_new_user",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
   },
   {
     "function_name": "handle_professor_details_update",
-    "schema_name": "public",
     "arguments": "",
-    "return_type": "trigger"
+    "return_type": "trigger",
+    "language": "plpgsql"
   },
   {
     "function_name": "is_admin",
-    "schema_name": "public",
     "arguments": "user_id uuid",
-    "return_type": "boolean"
+    "return_type": "boolean",
+    "language": "sql"
   },
   {
     "function_name": "is_admin",
-    "schema_name": "public",
     "arguments": "",
-    "return_type": "boolean"
+    "return_type": "boolean",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "listar_colunas",
+    "arguments": "",
+    "return_type": "TABLE(table_name text, column_name text, data_type text)",
+    "language": "sql"
+  },
+  {
+    "function_name": "log_completed_class_hours",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "moddatetime",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "set_user_roles",
+    "arguments": "target_user_id uuid, make_admin boolean, make_professor boolean",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "sync_full_name",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "sync_professor_roles",
+    "arguments": "",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "sync_profile_from_auth",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
   },
   {
     "function_name": "trigger_set_timestamp",
-    "schema_name": "public",
     "arguments": "",
-    "return_type": "trigger"
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "update_dropout_students",
+    "arguments": "",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "update_email_metrics",
+    "arguments": "p_campaign_id uuid, p_metric_name character varying, p_value numeric",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "update_marketing_timestamp",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "update_past_due_classes_status",
+    "arguments": "",
+    "return_type": "void",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "update_updated_at_column",
+    "arguments": "",
+    "return_type": "trigger",
+    "language": "plpgsql"
+  },
+  {
+    "function_name": "update_user_role",
+    "arguments": "user_email text, new_role text",
+    "return_type": "boolean",
+    "language": "plpgsql"
   }
 ]

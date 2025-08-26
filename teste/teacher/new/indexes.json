@@ -1,0 +1,1115 @@
+[
+  {
+    "table_name": "academic_works",
+    "index_name": "academic_works_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "admin_requests",
+    "index_name": "admin_requests_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "administrative_requests",
+    "index_name": "administrative_requests_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "announcements",
+    "index_name": "announcements_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "answers",
+    "index_name": "answers_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "audiovisual_materials",
+    "index_name": "audiovisual_materials_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "bank_integrations",
+    "index_name": "bank_integrations_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "bank_slips",
+    "index_name": "bank_slips_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "calendar_events",
+    "index_name": "calendar_events_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "campaign_metrics",
+    "index_name": "campaign_metrics_campaign_id_metric_date_key",
+    "column_name": "campaign_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "campaign_metrics",
+    "index_name": "campaign_metrics_campaign_id_metric_date_key",
+    "column_name": "metric_date",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "campaign_metrics",
+    "index_name": "campaign_metrics_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "campaign_metrics",
+    "index_name": "idx_campaign_metrics_campaign_id",
+    "column_name": "campaign_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "campaign_metrics",
+    "index_name": "idx_campaign_metrics_metric_date",
+    "column_name": "metric_date",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "certificates",
+    "index_name": "certificates_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "certificates",
+    "index_name": "idx_certificates_course",
+    "column_name": "course_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "class_attendance",
+    "index_name": "class_attendance_class_id_user_id_event_date_key",
+    "column_name": "class_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "class_attendance",
+    "index_name": "class_attendance_class_id_user_id_event_date_key",
+    "column_name": "event_date",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "class_attendance",
+    "index_name": "class_attendance_class_id_user_id_event_date_key",
+    "column_name": "user_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "class_attendance",
+    "index_name": "class_attendance_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "classes",
+    "index_name": "classes_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "contracts",
+    "index_name": "contracts_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "course_documents",
+    "index_name": "course_documents_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "course_duplications",
+    "index_name": "course_duplications_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "course_forums",
+    "index_name": "course_forums_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "course_prerequisites",
+    "index_name": "course_prerequisites_pkey",
+    "column_name": "prerequisite_id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "course_prerequisites",
+    "index_name": "course_prerequisites_pkey",
+    "column_name": "course_id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "course_segments",
+    "index_name": "course_segments_name_key",
+    "column_name": "name",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "course_segments",
+    "index_name": "course_segments_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "courses",
+    "index_name": "courses_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "courses",
+    "index_name": "idx_courses_segment_id",
+    "column_name": "segment_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "courses_taught",
+    "index_name": "courses_taught_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "courses_taught",
+    "index_name": "courses_taught_professor_id_course_id_key",
+    "column_name": "professor_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "courses_taught",
+    "index_name": "courses_taught_professor_id_course_id_key",
+    "column_name": "course_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "crm_contacts",
+    "index_name": "crm_contacts_email_key",
+    "column_name": "email",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "crm_contacts",
+    "index_name": "crm_contacts_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "crm_contacts",
+    "index_name": "idx_crm_email",
+    "column_name": "email",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "custom_evaluation_forms",
+    "index_name": "custom_evaluation_forms_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "custom_forms",
+    "index_name": "custom_forms_course_id_key",
+    "column_name": "course_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "custom_forms",
+    "index_name": "custom_forms_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "custom_reports",
+    "index_name": "custom_reports_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "customer_segments",
+    "index_name": "customer_segments_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "documents",
+    "index_name": "documents_authentication_code_key",
+    "column_name": "authentication_code",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "documents",
+    "index_name": "documents_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "documents",
+    "index_name": "idx_documents_authentication_code",
+    "column_name": "authentication_code",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "documents",
+    "index_name": "idx_documents_document_type",
+    "column_name": "document_type",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "documents",
+    "index_name": "idx_documents_user_id",
+    "column_name": "user_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_campaigns",
+    "index_name": "email_campaigns_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_list_contacts",
+    "index_name": "email_list_contacts_list_id_email_key",
+    "column_name": "email",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_list_contacts",
+    "index_name": "email_list_contacts_list_id_email_key",
+    "column_name": "list_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_list_contacts",
+    "index_name": "email_list_contacts_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_lists",
+    "index_name": "email_lists_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_lists",
+    "index_name": "idx_email_lists_created_by",
+    "column_name": "created_by",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_metrics",
+    "index_name": "email_metrics_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_metrics",
+    "index_name": "idx_email_metrics_email_log_id",
+    "column_name": "email_log_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_metrics",
+    "index_name": "idx_email_metrics_event_type",
+    "column_name": "event_type",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_metrics",
+    "index_name": "idx_email_metrics_recipient_email",
+    "column_name": "recipient_email",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_metrics",
+    "index_name": "idx_email_metrics_timestamp",
+    "column_name": "timestamp",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_settings",
+    "index_name": "email_settings_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_subscribers",
+    "index_name": "email_subscribers_list_id_email_key",
+    "column_name": "email",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_subscribers",
+    "index_name": "email_subscribers_list_id_email_key",
+    "column_name": "list_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_subscribers",
+    "index_name": "email_subscribers_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_subscribers",
+    "index_name": "idx_email_subscribers_list_email",
+    "column_name": "email",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_subscribers",
+    "index_name": "idx_email_subscribers_list_email",
+    "column_name": "list_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_subscribers",
+    "index_name": "idx_email_subscribers_status",
+    "column_name": "status",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_templates",
+    "index_name": "email_templates_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_templates",
+    "index_name": "idx_email_templates_created_by",
+    "column_name": "created_by",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_templates",
+    "index_name": "idx_email_templates_type",
+    "column_name": "type",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_tracking",
+    "index_name": "email_tracking_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "email_tracking",
+    "index_name": "idx_email_tracking_campaign_id",
+    "column_name": "campaign_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "email_tracking",
+    "index_name": "idx_email_tracking_event_type",
+    "column_name": "event_type",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "enrollments",
+    "index_name": "enrollments_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "enrollments",
+    "index_name": "enrollments_user_id_class_id_key",
+    "column_name": "class_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "enrollments",
+    "index_name": "enrollments_user_id_class_id_key",
+    "column_name": "user_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "enrollments",
+    "index_name": "idx_enrollments_overdue",
+    "column_name": "overdue_balance",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "enrollments",
+    "index_name": "idx_enrollments_status",
+    "column_name": "status",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "financial_data",
+    "index_name": "financial_data_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "financial_transactions",
+    "index_name": "financial_transactions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "form_fields",
+    "index_name": "form_fields_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "form_responses",
+    "index_name": "form_responses_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "form_submissions",
+    "index_name": "form_submissions_form_id_user_id_key",
+    "column_name": "form_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "form_submissions",
+    "index_name": "form_submissions_form_id_user_id_key",
+    "column_name": "user_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "form_submissions",
+    "index_name": "form_submissions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "forum_messages",
+    "index_name": "forum_messages_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "general_documents",
+    "index_name": "general_documents_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "institutional_evaluations",
+    "index_name": "idx_institutional_evaluations_course_id",
+    "column_name": "course_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "institutional_evaluations",
+    "index_name": "idx_institutional_evaluations_evaluation_type",
+    "column_name": "evaluation_type",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "institutional_evaluations",
+    "index_name": "institutional_evaluations_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "lead_interactions",
+    "index_name": "idx_lead_interactions_created_at",
+    "column_name": "created_at",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "lead_interactions",
+    "index_name": "idx_lead_interactions_created_by",
+    "column_name": "created_by",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "lead_interactions",
+    "index_name": "idx_lead_interactions_lead_id",
+    "column_name": "lead_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "lead_interactions",
+    "index_name": "lead_interactions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "leads",
+    "index_name": "idx_leads_assigned_to",
+    "column_name": "assigned_to",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "leads",
+    "index_name": "idx_leads_created_at",
+    "column_name": "created_at",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "leads",
+    "index_name": "idx_leads_email",
+    "column_name": "email",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "leads",
+    "index_name": "idx_leads_source",
+    "column_name": "source",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "leads",
+    "index_name": "idx_leads_status",
+    "column_name": "status",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "leads",
+    "index_name": "leads_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "lesson_attachments",
+    "index_name": "lesson_attachments_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "lesson_plans",
+    "index_name": "lesson_plans_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "lesson_progress",
+    "index_name": "lesson_progress_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "lessons",
+    "index_name": "lessons_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "low_attendance_alerts",
+    "index_name": "low_attendance_alerts_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "low_attendance_alerts",
+    "index_name": "unique_alert_per_day",
+    "column_name": "alert_date",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "low_attendance_alerts",
+    "index_name": "unique_alert_per_day",
+    "column_name": "class_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "low_attendance_alerts",
+    "index_name": "unique_alert_per_day",
+    "column_name": "user_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "marketing_campaigns",
+    "index_name": "idx_marketing_campaigns_created_by",
+    "column_name": "created_by",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "marketing_campaigns",
+    "index_name": "idx_marketing_campaigns_start_date",
+    "column_name": "start_date",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "marketing_campaigns",
+    "index_name": "idx_marketing_campaigns_status",
+    "column_name": "status",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "marketing_campaigns",
+    "index_name": "idx_marketing_campaigns_type",
+    "column_name": "type",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "marketing_campaigns",
+    "index_name": "marketing_campaigns_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "marketing_media",
+    "index_name": "marketing_media_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "members",
+    "index_name": "members_pkey",
+    "column_name": "user_id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "members",
+    "index_name": "members_pkey",
+    "column_name": "team_id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "module_prerequisites",
+    "index_name": "module_prerequisites_pkey",
+    "column_name": "module_id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "module_prerequisites",
+    "index_name": "module_prerequisites_pkey",
+    "column_name": "prerequisite_module_id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "modules",
+    "index_name": "modules_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "moodle_academic_works",
+    "index_name": "idx_moodle_academic_works_course_id",
+    "column_name": "course_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "moodle_academic_works",
+    "index_name": "moodle_academic_works_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "moodle_certificates",
+    "index_name": "idx_moodle_certificates_course_id",
+    "column_name": "course_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "moodle_certificates",
+    "index_name": "moodle_certificates_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "moodle_integrations",
+    "index_name": "moodle_integrations_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "newsletter_subscriptions",
+    "index_name": "newsletter_subscriptions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "newsletter_templates",
+    "index_name": "newsletter_templates_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "newsletters",
+    "index_name": "newsletters_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "notifications",
+    "index_name": "notifications_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "price_tables",
+    "index_name": "price_tables_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "professor_details",
+    "index_name": "professor_details_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "professor_payments",
+    "index_name": "professor_payments_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "profile_scholarships",
+    "index_name": "profile_scholarships_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "profile_scholarships",
+    "index_name": "profile_scholarships_profile_id_scholarship_id_key",
+    "column_name": "profile_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "profile_scholarships",
+    "index_name": "profile_scholarships_profile_id_scholarship_id_key",
+    "column_name": "scholarship_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "profiles",
+    "index_name": "idx_profiles_position_id",
+    "column_name": "position_id",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "profiles",
+    "index_name": "profiles_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "profiles",
+    "index_name": "unique_cpf",
+    "column_name": "cpf",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "questions",
+    "index_name": "questions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "quiz_attempt_answers",
+    "index_name": "quiz_attempt_answers_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "quiz_attempts",
+    "index_name": "quiz_attempts_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "quiz_attempts",
+    "index_name": "quiz_attempts_quiz_id_user_id_key",
+    "column_name": "quiz_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "quiz_attempts",
+    "index_name": "quiz_attempts_quiz_id_user_id_key",
+    "column_name": "user_id",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "quiz_responses",
+    "index_name": "quiz_responses_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "quizzes",
+    "index_name": "quizzes_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "report_executions",
+    "index_name": "idx_report_executions_executed_at",
+    "column_name": "executed_at",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "report_executions",
+    "index_name": "report_executions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "request_comments",
+    "index_name": "request_comments_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "retention_actions",
+    "index_name": "retention_actions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "rooms",
+    "index_name": "rooms_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "scholarships",
+    "index_name": "scholarships_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "service_price_list",
+    "index_name": "service_price_list_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "service_providers",
+    "index_name": "service_providers_email_key",
+    "column_name": "email",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "service_providers",
+    "index_name": "service_providers_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "signed_documents",
+    "index_name": "signed_documents_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "submission_answers",
+    "index_name": "submission_answers_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "teachers",
+    "index_name": "teachers_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "user_positions",
+    "index_name": "idx_user_positions_category",
+    "column_name": "category",
+    "is_unique": false,
+    "is_primary": false
+  },
+  {
+    "table_name": "user_positions",
+    "index_name": "user_positions_name_key",
+    "column_name": "name",
+    "is_unique": true,
+    "is_primary": false
+  },
+  {
+    "table_name": "user_positions",
+    "index_name": "user_positions_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "user_roles",
+    "index_name": "user_roles_pkey",
+    "column_name": "id",
+    "is_unique": true,
+    "is_primary": true
+  },
+  {
+    "table_name": "user_roles",
+    "index_name": "user_roles_role_name_key",
+    "column_name": "role_name",
+    "is_unique": true,
+    "is_primary": false
+  }
+]

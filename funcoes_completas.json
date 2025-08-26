@@ -1,0 +1,304 @@
+{
+  "financial_module": {
+    "description": "Módulo financeiro completo para OneEduca",
+    "version": "1.0.0",
+    "last_updated": "2024-01-15",
+    "database_functions": {
+      "financial_balance": {
+        "description": "Calcula saldo financeiro de um estudante",
+        "parameters": ["student_id"],
+        "returns": "DECIMAL",
+        "file": "update_gestao_financeira.sql"
+      },
+      "revenue_forecast": {
+        "description": "Previsão de receita para um período",
+        "parameters": ["start_date", "end_date"],
+        "returns": "DECIMAL",
+        "file": "update_gestao_financeira.sql"
+      },
+      "process_bank_slip_payment": {
+        "description": "Processa pagamento de boleto bancário",
+        "parameters": ["bank_slip_id", "payment_amount", "payment_date"],
+        "returns": "BOOLEAN",
+        "file": "06_financial_utilities.sql"
+      },
+      "backup_financial_data": {
+        "description": "Backup de dados financeiros em formato JSONB",
+        "parameters": ["profile_id"],
+        "returns": "JSONB",
+        "file": "06_financial_utilities.sql"
+      },
+      "is_admin": {
+        "description": "Verifica se usuário é administrador",
+        "parameters": [],
+        "returns": "BOOLEAN",
+        "file": "03_financial_policies.sql"
+      },
+      "is_financial_user": {
+        "description": "Verifica se usuário tem acesso financeiro",
+        "parameters": [],
+        "returns": "BOOLEAN",
+        "file": "03_financial_policies.sql"
+      },
+      "register_student_financial_data": {
+        "description": "Registra dados financeiros de estudante em lote",
+        "parameters": ["student_data"],
+        "returns": "JSON",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "register_scholarships_bulk": {
+        "description": "Registra bolsas de estudo em lote",
+        "parameters": ["scholarship_data"],
+        "returns": "JSON",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "generate_bank_slip_batch": {
+        "description": "Gera lote de boletos bancários",
+        "parameters": ["profile_ids", "due_date", "amount"],
+        "returns": "JSON",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "send_bank_slip_batch": {
+        "description": "Envia lote de boletos por email",
+        "parameters": ["batch_id"],
+        "returns": "JSON",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "setup_automatic_billing": {
+        "description": "Configura cobrança automática para estudante",
+        "parameters": ["profile_id", "config"],
+        "returns": "JSON",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "process_automatic_billing": {
+        "description": "Processa cobrança automática",
+        "parameters": [],
+        "returns": "JSON",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "calculate_late_fees": {
+        "description": "Calcula multas e juros por atraso",
+        "parameters": ["amount", "due_date", "payment_date"],
+        "returns": "DECIMAL",
+        "file": "05_automatic_billing_services.sql"
+      },
+      "get_financial_balance_report": {
+        "description": "Relatório de saldo financeiro",
+        "parameters": ["profile_id"],
+        "returns": "JSON",
+        "file": "04_financial_reports.sql"
+      },
+      "get_financial_summary_report": {
+        "description": "Relatório resumo financeiro",
+        "parameters": ["start_date", "end_date"],
+        "returns": "JSON",
+        "file": "04_financial_reports.sql"
+      },
+      "get_debt_settlement_report": {
+        "description": "Relatório de quitação de débitos",
+        "parameters": ["profile_id"],
+        "returns": "JSON",
+        "file": "04_financial_reports.sql"
+      },
+      "get_class_delinquency_report": {
+        "description": "Relatório de inadimplência por turma",
+        "parameters": ["class_id"],
+        "returns": "JSON",
+        "file": "04_financial_reports.sql"
+      },
+      "get_financial_dashboard": {
+        "description": "Dashboard financeiro completo",
+        "parameters": [],
+        "returns": "JSON",
+        "file": "04_financial_reports.sql"
+      },
+      "generate_nothing_owed_declaration": {
+        "description": "Gera declaração de nada consta",
+        "parameters": ["profile_id"],
+        "returns": "JSON",
+        "file": "04_financial_reports.sql"
+      }
+    },
+    "database_tables": {
+      "financial_data": {
+        "description": "Dados financeiros dos estudantes",
+        "columns": ["id", "profile_id", "amount", "due_date", "status", "description", "created_at", "updated_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "bank_slips": {
+        "description": "Boletos bancários",
+        "columns": ["id", "profile_id", "amount", "due_date", "status", "barcode", "payment_date", "created_at", "updated_at"],
+        "file": "02_enhance_bank_slips.sql"
+      },
+      "invoices": {
+        "description": "Faturas e notas fiscais",
+        "columns": ["id", "profile_id", "invoice_number", "amount", "issue_date", "due_date", "status", "pdf_path", "created_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "financial_declarations": {
+        "description": "Declarações financeiras (nada consta)",
+        "columns": ["id", "profile_id", "declaration_type", "issue_date", "valid_until", "pdf_path", "created_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "payment_reminders": {
+        "description": "Lembretes de pagamento",
+        "columns": ["id", "profile_id", "reminder_type", "sent_date", "due_date", "amount", "status", "created_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "financial_batches": {
+        "description": "Lotes de operações financeiras",
+        "columns": ["id", "batch_type", "total_records", "processed_records", "status", "created_by", "created_at", "completed_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "bank_integrations": {
+        "description": "Integrações bancárias",
+        "columns": ["id", "bank_name", "api_endpoint", "api_key_hash", "is_active", "created_at", "updated_at"],
+        "file": "update_gestao_financeira.sql"
+      },
+      "automatic_billing_configs": {
+        "description": "Configurações de cobrança automática",
+        "columns": ["id", "profile_id", "days_before_due", "days_after_due", "email_enabled", "sms_enabled", "max_reminders", "is_active", "created_at", "updated_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "billing_message_templates": {
+        "description": "Templates de mensagens de cobrança",
+        "columns": ["id", "template_name", "message_type", "channel", "subject", "body", "is_active", "created_at", "updated_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      },
+      "billing_notification_logs": {
+        "description": "Log de notificações de cobrança",
+        "columns": ["id", "profile_id", "notification_type", "channel", "sent_at", "status", "error_message", "created_at"],
+        "file": "01_create_missing_financial_tables.sql"
+      }
+    },
+    "frontend_components": {
+      "BulkOperations": {
+        "description": "Componente para operações em lote",
+        "features": ["Upload CSV", "Registro de dados financeiros", "Registro de bolsas", "Templates de download"],
+        "file": "src/components/financial/BulkOperations.tsx"
+      },
+      "FinancialReports": {
+        "description": "Componente para relatórios financeiros",
+        "features": ["Dashboard", "Gráficos interativos", "Relatórios de saldo", "Relatórios de inadimplência"],
+        "file": "src/components/financial/FinancialReports.tsx"
+      },
+      "BankSlipManagement": {
+        "description": "Componente para gestão de boletos",
+        "features": ["Geração de lotes", "Processamento de pagamentos", "Filtros avançados", "Status tracking"],
+        "file": "src/components/financial/BankSlipManagement.tsx"
+      },
+      "BillingAutomation": {
+        "description": "Componente para cobrança automática",
+        "features": ["Configuração de regras", "Templates de mensagem", "Logs de notificação", "Processamento automático"],
+        "file": "src/components/financial/BillingAutomation.tsx"
+      }
+    },
+    "services": {
+      "financialService": {
+        "description": "Serviço principal para operações financeiras",
+        "methods": [
+          "getFinancialTransactions",
+          "registerStudentFinancialDataBulk",
+          "registerScholarshipsBulk",
+          "getBankSlips",
+          "generateBankSlipBatch",
+          "sendBankSlipBatch",
+          "processBankSlipPayment",
+          "getFinancialBalance",
+          "getFinancialSummary",
+          "getDebtSettlementReport",
+          "getClassDelinquencyReport",
+          "getFinancialDashboard",
+          "createInvoice",
+          "getInvoices",
+          "generateNothingOwedDeclaration",
+          "getFinancialDeclarations",
+          "setupAutomaticBilling",
+          "processAutomaticBilling",
+          "calculateLateFees",
+          "backupFinancialData"
+        ],
+        "file": "src/services/financialService.ts"
+      }
+    },
+    "types": {
+      "description": "Tipos TypeScript para o módulo financeiro",
+      "types": [
+        "FinancialTransaction",
+        "Invoice",
+        "CreateInvoiceData",
+        "BankSlip",
+        "CreateBankSlipData",
+        "FinancialDeclaration",
+        "CreateFinancialDeclarationData",
+        "PaymentReminder",
+        "FinancialBatch",
+        "BankIntegration",
+        "AutomaticBillingConfig",
+        "BillingMessageTemplate",
+        "BillingNotificationLog",
+        "FinancialBalanceReport",
+        "FinancialSummaryReport",
+        "DebtSettlementReport",
+        "ClassDelinquencyReport",
+        "FinancialDashboardSummary",
+        "BulkStudentFinancialData",
+        "BulkScholarshipData",
+        "BulkOperationResult",
+        "Scholarship",
+        "ProfileScholarship"
+      ],
+      "file": "src/types/financial.ts"
+    },
+    "security": {
+      "row_level_security": {
+        "description": "Políticas de segurança a nível de linha",
+        "policies": [
+          "financial_declarations_policy",
+          "payment_reminders_policy",
+          "financial_batches_policy",
+          "bank_slips_policy",
+          "financial_transactions_policy",
+          "scholarships_policy",
+          "profile_scholarships_policy"
+        ],
+        "file": "03_financial_policies.sql"
+      },
+      "access_control": {
+        "admin_functions": ["is_admin", "is_financial_user"],
+        "user_restrictions": "Usuários só podem ver seus próprios dados financeiros",
+        "admin_privileges": "Administradores têm acesso completo a todos os dados"
+      }
+    },
+    "requirements_mapping": {
+      "3.4.1_service_registration": {
+        "description": "Serviço de Cadastro",
+        "implemented_by": ["BulkOperations component", "register_student_financial_data function", "register_scholarships_bulk function"]
+      },
+      "3.4.2_document_issuance": {
+        "description": "Serviço de Emissão de Documentos",
+        "implemented_by": ["BankSlipManagement component", "generate_bank_slip_batch function", "generate_nothing_owed_declaration function"]
+      },
+      "3.4.3_reporting_service": {
+        "description": "Serviço de Relatórios",
+        "implemented_by": ["FinancialReports component", "04_financial_reports.sql functions"]
+      },
+      "3.4.4_additional_services": {
+        "description": "Serviços Adicionais",
+        "implemented_by": ["BillingAutomation component", "05_automatic_billing_services.sql functions", "06_financial_utilities.sql functions"]
+      }
+    },
+    "installation_order": [
+      "01_create_missing_financial_tables.sql",
+      "02_enhance_bank_slips.sql",
+      "03_financial_policies.sql",
+      "04_financial_reports.sql",
+      "05_automatic_billing_services.sql",
+      "06_financial_utilities.sql"
+    ],
+    "documentation": {
+      "readme": "financeiro/README.md",
+      "functions_reference": "funcoes_completas.json"
+    }
+  }
+}

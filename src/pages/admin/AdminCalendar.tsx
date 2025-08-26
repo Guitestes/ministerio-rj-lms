@@ -42,6 +42,27 @@ const AdminCalendar = () => {
     endTime: '',
   });
 
+  // Reset form when modal is closed
+  const resetForm = () => {
+    setSelectedCourse('');
+    setSelectedTarget('');
+    setTargets([]);
+    setEventData({
+      title: '',
+      description: '',
+      startTime: '',
+      endTime: '',
+    });
+  };
+
+  // Handle modal open/close
+  const handleModalChange = (open: boolean) => {
+    setIsModalOpen(open);
+    if (!open) {
+      resetForm();
+    }
+  };
+
   // Fetch all courses for the selector
   useEffect(() => {
     courseService.getCourses().then(setCourses).catch(() => toast.error("Failed to load courses."));
@@ -50,11 +71,13 @@ const AdminCalendar = () => {
   // Fetch targets when a course is selected
   useEffect(() => {
     if (selectedCourse) {
+      setSelectedTarget(''); // Reset target selection when course changes
       calendarService.getEventTargetsForCourse(selectedCourse)
         .then(setTargets)
         .catch(() => toast.error("Failed to load targets for the selected course."));
     } else {
       setTargets([]);
+      setSelectedTarget(''); // Reset target selection when no course is selected
     }
   }, [selectedCourse]);
 
@@ -112,6 +135,17 @@ const AdminCalendar = () => {
 
   const handleCreateEvent = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Debug logging
+    console.log('Form validation:', {
+      selectedCourse,
+      selectedTarget,
+      title: eventData.title,
+      startTime: eventData.startTime,
+      endTime: eventData.endTime,
+      targets: targets.length
+    });
+    
     if (!selectedCourse || !selectedTarget || !eventData.title || !eventData.startTime || !eventData.endTime) {
       toast.error("Please fill all fields.");
       return;
@@ -135,6 +169,7 @@ const AdminCalendar = () => {
       });
       toast.success("Event created successfully!");
       setIsModalOpen(false);
+      resetForm();
       // Optionally, refresh the list of classes/events if needed
     } catch (error: any) {
       toast.error(`Failed to create event: ${error.message}`);
@@ -145,7 +180,7 @@ const AdminCalendar = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Calendário (Admin)</h1>
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog open={isModalOpen} onOpenChange={handleModalChange}>
           <DialogTrigger asChild>
             <Button><PlusCircle className="mr-2 h-4 w-4" /> Criar Evento</Button>
           </DialogTrigger>

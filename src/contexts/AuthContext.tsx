@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(processedUser);
         
         // Reset login attempts when auth state changes successfully
-        if (event === 'SIGNED_IN') {
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
           setLoginAttempts(0);
           setIsRetrying(false);
         }

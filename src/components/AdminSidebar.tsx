@@ -40,11 +40,7 @@ const AdminSidebar = () => {
       icon: <BarChart size={20} />,
       href: "/admin/reports",
     },
-    {
-      title: "Desempenho Prestadores",
-      icon: <BarChart size={20} />,
-      href: "/admin/provider-reports",
-    },
+
     {
       title: "Solicitações",
       icon: <FileText size={20} />,

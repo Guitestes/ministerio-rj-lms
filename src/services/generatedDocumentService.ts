@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import crypto from 'crypto';
 
 /**
  * The structure of a generated document for use in the frontend.
@@ -15,6 +16,7 @@ export interface GeneratedDocument {
   authenticationCode: string;
   createdAt: string;
   courseId?: string | null;
+  digitalSignature?: string;
 }
 
 /**
@@ -30,6 +32,7 @@ interface DocumentDB {
   authentication_code: string;
   created_at: string;
   course_id?: string | null;
+  digital_signature?: string;
 }
 
 /**
@@ -42,6 +45,7 @@ export interface CreateDocumentData {
   contentHtml: string;
   authenticationCode: string;
   courseId?: string;
+  digitalSignature?: string;
 }
 
 /**
@@ -57,6 +61,7 @@ const mapToGeneratedDocument = (doc: DocumentDB): GeneratedDocument => ({
   authenticationCode: doc.authentication_code,
   createdAt: doc.created_at,
   courseId: doc.course_id,
+  digitalSignature: doc.digital_signature,
 });
 
 /**
@@ -104,8 +109,16 @@ const getDocumentsForUser = async (userId: string): Promise<GeneratedDocument[]>
  * Creates a new document in the database.
  * @param documentData The data for the new document.
  */
+const generateDigitalSignature = (content: string): string => {
+  const hash = crypto.createHash('sha256');
+  hash.update(content);
+  return hash.digest('hex');
+};
+
 const createDocument = async (documentData: CreateDocumentData): Promise<GeneratedDocument | null> => {
   try {
+    const digitalSignature = generateDigitalSignature(documentData.contentHtml);
+
     const { data, error } = await supabase
       .from('documents')
       .insert({
@@ -114,6 +127,7 @@ const createDocument = async (documentData: CreateDocumentData): Promise<Generat
         title: documentData.title,
         content_html: documentData.contentHtml,
         authentication_code: documentData.authenticationCode,
+        digital_signature: digitalSignature,
         course_id: documentData.courseId,
       })
       .select('*')
@@ -125,7 +139,7 @@ const createDocument = async (documentData: CreateDocumentData): Promise<Generat
       throw error;
     }
 
-    toast.success('Document created successfully!');
+    toast.success('Document created successfully with digital signature!');
     return mapToGeneratedDocument(data);
   } catch (error) {
     return null;

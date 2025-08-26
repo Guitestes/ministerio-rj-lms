@@ -43,8 +43,13 @@ import { getEnrolledUsers } from "@/services/courses/enrollmentService";
 import { toast } from "sonner";
 import { Plus, Download, Search, RefreshCw, Loader2, MoreHorizontal, Eye, Edit, Trash } from "lucide-react";
 import { CreateCertificateData } from "@/services/certificateService";
+import { supabase } from "@/integrations/supabase/client";
 
 // Interface para usuários com status de certificado
+interface ExtendedCourse extends Course {
+  isEnrolled: boolean;
+}
+
 interface EnrolledUser extends User {
   hasCertificate: boolean;
   progress?: number;
@@ -70,7 +75,7 @@ const AdminCertificates = () => {
   // Estado para certificados
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<ExtendedCourse[]>([]);
   const [enrolledUsers, setEnrolledUsers] = useState<EnrolledUser[]>([]);
   
   // Estados de UI
@@ -110,7 +115,7 @@ const AdminCertificates = () => {
   // Buscar usuários
   const fetchUsers = async () => {
     try {
-      const data = await userService.getAllUsers();
+      const data = await userService.getUsers();
       setUsers(data || []);
     } catch (err) {
       console.error("Error fetching users:", err);
@@ -120,7 +125,7 @@ const AdminCertificates = () => {
   // Buscar cursos
   const fetchCourses = async () => {
     try {
-      const data = await courseService.getCourses();
+      const data = await courseService.getCourses() as ExtendedCourse[];
       setCourses(data || []);
     } catch (err) {
       console.error("Error fetching courses:", err);
@@ -141,74 +146,19 @@ const AdminCertificates = () => {
       
       console.log('Buscando alunos matriculados para o curso ID:', courseId);
       
-      // Verificar se o usuário atual tem um perfil válido
-      try {
-        const { data: currentUserProfile, error: profileError } = await supabase
-          .from('profiles')
-          .select('id, name, email')
-          .single();
-          
-        if (profileError || !currentUserProfile) {
-          console.log('Perfil do usuário atual não encontrado, tentando criar automaticamente...');
-          
-          // Buscar dados do usuário autenticado
-          const { data: authData } = await supabase.auth.getUser();
-          
-          if (authData?.user) {
-            // Criar perfil do usuário automaticamente
-            const { error: createError } = await supabase
-              .from('profiles')
-              .upsert({
-                id: authData.user.id,
-                name: authData.user.user_metadata?.name || authData.user.user_metadata?.full_name || 'Usuário',
-                email: authData.user.email,
-                role: authData.user.user_metadata?.role || 'student',
-                created_at: new Date().toISOString()
-              });
-              
-            if (createError) {
-              console.error('Erro ao criar perfil do usuário atual:', createError);
-            } else {
-              console.log('Perfil do usuário atual criado automaticamente');
-            }
-          }
-        } else {
-          console.log('Perfil do usuário atual encontrado:', currentUserProfile);
-        }
-      } catch (profileCheckError) {
-        console.error('Erro ao verificar perfil do usuário atual:', profileCheckError);
-      }
       
-      // Buscar certificados para este curso
-      const certificates = await certificateService.getCertificates(undefined, courseId);
-      console.log('Certificados encontrados para o curso:', certificates);
       
       // Buscar alunos matriculados no curso usando a função aprimorada
-      const enrolledStudents = await getEnrolledUsers(courseId);
-      console.log('Alunos matriculados encontrados:', enrolledStudents);
-      
-      if (!enrolledStudents || enrolledStudents.length === 0) {
-        console.log('Nenhum aluno matriculado retornado pela função getEnrolledUsers');
-        setEnrolledUsers([]);
-        toast.warning("Nenhum aluno matriculado encontrado neste curso.");
-        setIsLoadingEnrolledUsers(false);
-        return;
-      }
-      
-      // Criar um conjunto com os IDs dos usuários que têm certificados
-      const userIdsWithCertificates = new Set(certificates.map(cert => cert.userId));
-      console.log('IDs de usuários com certificados:', [...userIdsWithCertificates]);
-      
-      // Marcar os usuários que têm certificados
-      const usersWithCertificateStatus = enrolledStudents.map(user => ({
-        ...user,
-        hasCertificate: userIdsWithCertificates.has(user.id)
-      })) as EnrolledUser[];
-      
-      console.log('Usuários matriculados com status de certificado:', usersWithCertificateStatus);
-      
-      // Definir os usuários matriculados
-      setEnrolledUsers(usersWithCertificateStatus);
+const enrolledStudents = await getEnrolledUsers(courseId);
+
+if (!enrolledStudents || enrolledStudents.length === 0) {
+  setEnrolledUsers([]);
+  toast.warning("Nenhum aluno matriculado encontrado neste curso.");
+  setIsLoadingEnrolledUsers(false);
+  return;
+}
+
+setEnrolledUsers(enrolledStudents as EnrolledUser[]);
       
       // A mensagem de toast já é exibida na função getEnrolledUsers
     } catch (err) {

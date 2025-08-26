@@ -64,6 +64,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { getEnrolledUsers } from "@/services/courses/enrollmentService";
 
 interface Aluno {
   id: string;
@@ -174,65 +175,27 @@ export default function GerenciadorCertificados() {
       try {
         console.log(`Carregando matrículas para o curso ${cursoSelecionado}...`);
         
-        // Buscar matrículas para o curso selecionado - consulta simplificada
-        const { data: matriculasData, error: matriculasError } = await supabase
-          .from('enrollments')
-          .select('id, user_id, course_id, progress')
-          .eq('course_id', cursoSelecionado);
-        
-        if (matriculasError) {
-          console.error("Erro ao buscar matrículas:", matriculasError);
-          toast.error("Erro ao buscar matrículas");
-          setCarregando(false);
-          return;
-        }
-        
-        console.log(`Encontradas ${matriculasData?.length || 0} matrículas`);
-        
-        if (!matriculasData || matriculasData.length === 0) {
-          setMatriculas([]);
-          setCarregando(false);
-          return;
-        }
-        
-        // Buscar certificados existentes para este curso
-        const { data: certificadosData, error: certificadosError } = await supabase
-          .from('certificates')
-          .select('id, user_id, course_id')
-          .eq('course_id', cursoSelecionado);
-        
-        if (certificadosError) {
-          console.error("Erro ao buscar certificados:", certificadosError);
-          toast.error("Erro ao buscar certificados");
-        }
-        
-        console.log(`Encontrados ${certificadosData?.length || 0} certificados para este curso`);
-        
-        // Processar matrículas uma por uma para evitar problemas com Promise.all
-        const matriculasProcessadas = [];
-        
-        for (const matricula of matriculasData) {
-          try {
-            // Encontrar o aluno correspondente
-            const aluno = alunos.find(a => a.id === matricula.user_id);
-            
-            // Verificar se já existe certificado
-            const certificado = (certificadosData || []).find(
-              c => c.user_id === matricula.user_id && c.course_id === matricula.course_id
-            );
-            
-            matriculasProcessadas.push({
-              ...matricula,
-              userName: aluno?.name || 'Aluno não encontrado',
-              courseTitle: cursos.find(c => c.id === matricula.course_id)?.title || 'Curso não encontrado',
-              hasCertificate: !!certificado,
-              certificateId: certificado?.id,
-              selected: false
-            });
-          } catch (itemError) {
-            console.error("Erro ao processar matrícula:", itemError);
-          }
-        }
+        const enrolledUsers = await getEnrolledUsers(cursoSelecionado);
+      
+      if (!enrolledUsers || enrolledUsers.length === 0) {
+        setMatriculas([]);
+        setCarregando(false);
+        return;
+      }
+      
+      console.log(`Encontradas ${enrolledUsers.length} matrículas qualificadas`);
+      
+      const matriculasProcessadas = enrolledUsers.map(user => ({
+        id: user.id,
+        user_id: user.id,
+        course_id: cursoSelecionado,
+        progress: user.progress,
+        userName: user.name || 'Aluno não encontrado',
+        courseTitle: cursos.find(c => c.id === cursoSelecionado)?.title || 'Curso não encontrado',
+        hasCertificate: user.hasCertificate,
+        certificateId: undefined,
+        selected: false
+      }));
         
         console.log(`Processadas ${matriculasProcessadas.length} matrículas com sucesso`);
         setMatriculas(matriculasProcessadas);
